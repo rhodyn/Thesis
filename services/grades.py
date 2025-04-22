@@ -6,7 +6,7 @@ import joblib
 import re
 
 # Load model and data values
-data = joblib.load('models/cbf-grades_model.pkl')
+data = joblib.load('models/cbf_grades-model.pkl')
 courses = data['courses']
 grades_numeric = data['numeric_features']
 
