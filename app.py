@@ -109,9 +109,9 @@ def result():
     input3 = session.get("personality", [])
 
     # Model prediction with collected user input
-    hobby_final = recommend_hobby(input1)
-    grade_final = recommend_grade(input2)
-    person_final = recommend_person(input3)
+    hobby_final = hobby.recommend_hobby(input1)
+    grade_final = grades.recommend_grade(input2)
+    person_final = personality.recommend_person(input3)
 
     return render_template("result.html", hobby_final=hobby_final, grade_final=grade_final, person_final=person_final)
 
