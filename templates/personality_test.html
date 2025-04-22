@@ -45,7 +45,7 @@
         <form id="personForm" action="/personality_test" method="post" onsubmit="event.preventDefault(); calculateBFIAndSubmit();">
           <div class="question-card" id="questionCard">
               <div class="question" id="questionText"></div>
-              <input type="range" min="1" max="5" value="3" id="answerSlider">
+              <input type="range" min="1" max="5" value="3" id="answerSlider" oninput="document.getElementById('range-output').value = this.value">
               <div class="slider-options">
                 <label class="pertype-ans" value=1>Strongly Disagree<br>(1)</label>
                 <label class="pertype-ans">Slightly Disagree<br>(2)</label>
@@ -150,7 +150,6 @@
             loadQuestion(currentQuestion);
 
             function calculateBFIAndSubmit() {
-            const form = document.getElementById("personForm");
             const traits = {
                 O: [5, 10, 15, 20, 25, 30, 35, 40, 44],
                 C: [3, 8, 13, 18, 23, 28, 33, 38, 43],
@@ -164,27 +163,43 @@
 
             for (let trait in traits) {
                 traits[trait].forEach(q => {
-                    let val = parseInt(document.querySelector(answerSlider.value) || 0);
+                    let val = parseFloat(document.querySelector(answerSlider.value) || 0);
                     if (reversed.includes(q)) val = 6 - val;
                     scores[trait] += val;
                 });
             }
 
-            Object.keys(scores).forEach(trait => {
-                const input = document.createElement("input");
-                input.type = "hidden";
-                input.name = trait;
-                input.value = scores[trait];
-                form.appendChild(input);
-            });
+            const resultArray = [scores.O, scores.C, scores.E, scores.A, scores.N];
 
-            if (index === questions.length - 1) {
-                nextBtn.type = "submit";  // Makes it a form submit
-            }
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/personality_test";
+
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "bfi_scores";
+            input.value = JSON.stringify(resultArray);
+            form.appendChild(input);
 
             document.body.appendChild(form);
             form.submit();
             }
+
+            // Object.keys(scores).forEach(trait => {
+            //     const input = document.createElement("input");
+            //     input.type = "hidden";
+            //     input.name = trait;
+            //     input.value = scores[trait];
+            //     form.appendChild(input);
+            // });
+
+            // if (index === questions.length - 1) {
+            //     nextBtn.type = "submit";  // Makes it a form submit
+            // }
+
+            // document.body.appendChild(form);
+            // form.submit();
+            // }
           </script>
 </body>
 </html>
