@@ -42,7 +42,7 @@
 
     <div class="main-page">
         <h1>Personality Type Test</h1>
-        <form onsubmit="event.preventDefault(); calculateBFIAndSubmit();">
+        <form action="/personality_test" method="post" onsubmit="event.preventDefault(); calculateBFIAndSubmit();">
           <div id="progress">Question <span id="questionNumber">1</span> of 10</div>
           <div class="question-card" id="questionCard">
               <div class="question" id="questionText"></div>
@@ -160,11 +160,6 @@
                     scores[trait] += val;
                 });
             }
-
-            // Form to submit values to backend
-            const form = document.createElement("form");
-            form.method = "POST";
-            form.action = "/personality_test";
 
             Object.keys(scores).forEach(trait => {
                 const input = document.createElement("input");
