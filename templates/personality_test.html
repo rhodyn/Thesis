@@ -137,6 +137,18 @@
               }
             });
 
+            nextBtn.addEventListener('click', () => {
+              if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion(currentQuestion);
+              // } else {
+              //   console.log("Submitted responses:", responses);
+              //   alert("Thank you for completing the test! n\Processing your IT degree.....");
+              }
+            });
+        
+            loadQuestion(currentQuestion);
+
             function calculateBFIAndSubmit() {
             const form = document.getElementById("personForm");
             const traits = {
@@ -173,18 +185,6 @@
             document.body.appendChild(form);
             form.submit();
             }
-        
-            nextBtn.addEventListener('click', () => {
-              if (currentQuestion < questions.length - 1) {
-                currentQuestion++;
-                loadQuestion(currentQuestion);
-              // } else {
-              //   console.log("Submitted responses:", responses);
-              //   alert("Thank you for completing the test! n\Processing your IT degree.....");
-              }
-            });
-        
-            loadQuestion(currentQuestion);
           </script>
 </body>
 </html>
