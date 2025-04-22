@@ -65,7 +65,7 @@ def hobbies():
         # Store in session for later use
         session["hobbies"] = combined_text
 
-        return redirect(url_for("hobbies"))
+        return redirect(url_for("studentgrade"))
     return render_template("hobbies.html")
 
 # Student grade page (Page 3 of user input)
@@ -80,7 +80,7 @@ def studentgrade():
                 'NCAE': request.form['NCAE'],
         }
         session["grade"] = user_input
-        return redirect(url_for("studentgrade"))
+        return redirect(url_for("personality_test"))
     return render_template("studentgrade.html")
 
 # Personality page (Page 4 of user input)
@@ -96,7 +96,7 @@ def personality_test():
                 'Openness': float(request.form['O'])
         }
         session["personality"] = user_input
-        return redirect(url_for("personality_test"))
+        return redirect(url_for("result"))
     return render_template("personality_test.html")
 
 # Results page (Page 5)
