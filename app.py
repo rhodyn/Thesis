@@ -100,7 +100,7 @@ def personality_test():
     return render_template("personality_test.html")
 
 # Results page (Page 5)
-@app.route("/result")
+@app.route("/result", methods=["GET", "POST"])
 @login_required
 def result():
     # Loading data collected from user input pages
