@@ -169,20 +169,35 @@
                 });
             }
 
-            const resultArray = [scores.O, scores.C, scores.E, scores.A, scores.N];
-
             const form = document.createElement("form");
             form.method = "POST";
             form.action = "/personality_test";
 
-            const input = document.createElement("input");
-            input.type = "hidden";
-            input.name = "bfi_scores";
-            input.value = JSON.stringify(resultArray);
-            form.appendChild(input);
+            for (const trait in scores) {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = trait; // "O", "C", etc.
+                input.value = scores[trait];
+                form.appendChild(input);
+            }
 
             document.body.appendChild(form);
             form.submit();
+
+            // const resultArray = [scores.O, scores.C, scores.E, scores.A, scores.N];
+
+            // const form = document.createElement("form");
+            // form.method = "POST";
+            // form.action = "/personality_test";
+
+            // const input = document.createElement("input");
+            // input.type = "hidden";
+            // input.name = "bfi_scores";
+            // input.value = JSON.stringify(resultArray);
+            // form.appendChild(input);
+
+            // document.body.appendChild(form);
+            // form.submit();
             }
 
             // Object.keys(scores).forEach(trait => {
