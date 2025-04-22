@@ -159,7 +159,12 @@
               answerSlider.value = responses[index];
               prevBtn.disabled = index === 0;
               nextBtn.textContent = index === questions.length - 1 ? "Submit" : "Next";
+              if (current === questions.length - 1) {
+                nextBtn.innerText = "Submit";
+                nextBtn.type = "submit";  // Makes it a form submit
+              }
             }
+
         
             answerSlider.addEventListener('input', () => {
               responses[currentQuestion] = parseInt(answerSlider.value);
