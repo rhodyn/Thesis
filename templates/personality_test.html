@@ -125,7 +125,7 @@
               answerSlider.value = responses[index];
               prevBtn.disabled = index === 0;
               nextBtn.textContent = index === questions.length - 1 ? "Submit" : "Next";
-              if (current === questions.length - 1) {
+              if (index === questions.length - 1) {
                 nextBtn.type = "submit";  // Makes it a form submit
               }
             }
