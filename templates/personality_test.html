@@ -42,23 +42,25 @@
 
     <div class="main-page">
         <h1>Personality Type Test</h1>
-        <div id="progress">Question <span id="questionNumber">1</span> of 10</div>
-        <div class="question-card" id="questionCard">
-            <div class="question" id="questionText"></div>
-            <input type="range" min="1" max="5" value="3" id="answerSlider">
-            <div class="slider-options">
-              <label class="pertype-ans">Strongly Disagree<br>(1)</label>
-              <label class="pertype-ans">Slightly Disagree<br>(2)</label>
-              <label class="pertype-ans3">Neutral<br>(3)</label>
-              <label class="pertype-ans">Slightly Agree<br>(4)</label>
-              <label class="pertype-ans">Strongly Agree<br>(5)</label>
-            </div>
+        <form onsubmit="event.preventDefault(); calculateBFIAndSubmit();">
+          <div id="progress">Question <span id="questionNumber">1</span> of 10</div>
+          <div class="question-card" id="questionCard">
+              <div class="question" id="questionText"></div>
+              <input type="range" min="1" max="5" value="3" id="answerSlider">
+              <div class="slider-options">
+                <label class="pertype-ans">Strongly Disagree<br>(1)</label>
+                <label class="pertype-ans">Slightly Disagree<br>(2)</label>
+                <label class="pertype-ans3">Neutral<br>(3)</label>
+                <label class="pertype-ans">Slightly Agree<br>(4)</label>
+                <label class="pertype-ans">Strongly Agree<br>(5)</label>
+              </div>
 
-            <div class="navigation">
-              <button id="prevBtn">Previous</button>
-              <button id="nextBtn">Next</button>
+              <div class="navigation">
+                <button id="prevBtn">Previous</button>
+                <button id="nextBtn">Next</button>
+              </div>
             </div>
-          </div>
+        </form>
 
           <script>
             function calculateBFIAndSubmit() {
@@ -84,7 +86,7 @@
             // Form to submit values to backend
             const form = document.createElement("form");
             form.method = "POST";
-            form.action = "/recommend_person";
+            form.action = "/personality_test";
 
             Object.keys(scores).forEach(trait => {
                 const input = document.createElement("input");
