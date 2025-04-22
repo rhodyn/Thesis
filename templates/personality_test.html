@@ -48,7 +48,7 @@
               <div class="question" id="questionText"></div>
               <input type="range" min="1" max="5" value="3" id="answerSlider">
               <div class="slider-options">
-                <label class="pertype-ans">Strongly Disagree<br>(1)</label>
+                <label class="pertype-ans" value=1>Strongly Disagree<br>(1)</label>
                 <label class="pertype-ans">Slightly Disagree<br>(2)</label>
                 <label class="pertype-ans3">Neutral<br>(3)</label>
                 <label class="pertype-ans">Slightly Agree<br>(4)</label>
@@ -63,42 +63,6 @@
         </form>
 
           <script>
-            function calculateBFIAndSubmit() {
-            const traits = {
-                O: [5, 10, 15, 20, 25, 30, 35, 40, 44],
-                C: [3, 8, 13, 18, 23, 28, 33, 38, 43],
-                E: [1, 6, 11, 16, 21, 26, 31, 36],
-                A: [2, 7, 12, 17, 22, 27, 32, 37, 42],
-                N: [4, 9, 14, 19, 24, 29, 34, 39, 41]
-            };
-
-            const reversed = [6, 21, 31, 2, 12, 27, 37, 9, 19, 29, 41, 8, 18, 23, 43];
-            const scores = { O: 0, C: 0, E: 0, A: 0, N: 0 };
-
-            for (let trait in traits) {
-                traits[trait].forEach(q => {
-                    let val = parseInt(document.querySelector(`input[name='q${q}']:checked`)?.value || 0);
-                    if (reversed.includes(q)) val = 6 - val;
-                    scores[trait] += val;
-                });
-            }
-
-            // Form to submit values to backend
-            const form = document.createElement("form");
-            form.method = "POST";
-            form.action = "/personality_test";
-
-            Object.keys(scores).forEach(trait => {
-                const input = document.createElement("input");
-                input.type = "hidden";
-                input.name = trait;
-                input.value = scores[trait];
-                form.appendChild(input);
-            });
-
-            document.body.appendChild(form);
-            form.submit();
-            }
           </script>
           <script>
             const questions = [
@@ -162,12 +126,10 @@
               prevBtn.disabled = index === 0;
               nextBtn.textContent = index === questions.length - 1 ? "Submit" : "Next";
               if (current === questions.length - 1) {
-                nextBtn.innerText = "Submit";
                 nextBtn.type = "submit";  // Makes it a form submit
               }
             }
 
-        
             answerSlider.addEventListener('input', () => {
               responses[currentQuestion] = parseInt(answerSlider.value);
             });
@@ -178,6 +140,43 @@
                 loadQuestion(currentQuestion);
               }
             });
+
+            function calculateBFIAndSubmit() {
+            const traits = {
+                O: [5, 10, 15, 20, 25, 30, 35, 40, 44],
+                C: [3, 8, 13, 18, 23, 28, 33, 38, 43],
+                E: [1, 6, 11, 16, 21, 26, 31, 36],
+                A: [2, 7, 12, 17, 22, 27, 32, 37, 42],
+                N: [4, 9, 14, 19, 24, 29, 34, 39, 41]
+            };
+
+            const reversed = [6, 21, 31, 2, 12, 27, 37, 9, 19, 29, 41, 8, 18, 23, 43];
+            const scores = { O: 0, C: 0, E: 0, A: 0, N: 0 };
+
+            for (let trait in traits) {
+                traits[trait].forEach(q => {
+                    let val = parseInt(document.querySelector(answerSlider.value) || 0);
+                    if (reversed.includes(q)) val = 6 - val;
+                    scores[trait] += val;
+                });
+            }
+
+            // Form to submit values to backend
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/personality_test";
+
+            Object.keys(scores).forEach(trait => {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = trait;
+                input.value = scores[trait];
+                form.appendChild(input);
+            });
+
+            document.body.appendChild(form);
+            form.submit();
+            }
         
             nextBtn.addEventListener('click', () => {
               if (currentQuestion < questions.length - 1) {
