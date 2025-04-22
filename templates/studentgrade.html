@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grades Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="../static/grade-style.css">
+    <style>
+        body {
+            animation: fadeIn 1s ease-in-out;
+            color: white;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- <div class="container fixed-nav">
+        <ul class="nav nav-tabs justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="#">Strand</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Hobbies, Interest, and Career Aspirations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="#">Grades and Exam Results</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="#">Personality Test</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="#">Submit</a>
+            </li>
+        </ul> -->
+    </div>
+    <div class="main-container">
+        <h2>Enter Your Grades</h2>
+        
+        <form id="gradeForm" onsubmit="sendGrades(event)">
+            <label for="Math">Mathematics:</label>
+            <select id="Math" required>
+                <option value="">Select Grade</option>
+                <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
+                <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
+                <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
+                <option value="75-79 (FAIRLY SATISFACTORY)">75-79 (FAIRLY SATISFACTORY)</option>
+                <option value="Below 75 (DO NOT MEET EXPECTATIONS)">Below 75 (DO NOT MEET EXPECTATIONS)</option>
+            </select>
+            
+            <label for="Science">Science:</label>
+            <select id="Science" required>
+                <option value="">Select Grade</option>
+                <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
+                <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
+                <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
+                <option value="75-79 (FAIRLY SATISFACTORY)">75-79 (FAIRLY SATISFACTORY)</option>
+                <option value="Below 75 (DO NOT MEET EXPECTATIONS)">Below 75 (DO NOT MEET EXPECTATIONS)</option>
+            </select>
+            
+            <label for="English">English:</label>
+            <select id="English" required>
+                <option value="">Select Grade</option>
+                <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
+                <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
+                <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
+                <option value="75-79 (FAIRLY SATISFACTORY)">75-79 (FAIRLY SATISFACTORY)</option>
+                <option value="Below 75 (DO NOT MEET EXPECTATIONS)">Below 75 (DO NOT MEET EXPECTATIONS)</option>
+            </select>
+            
+            <label for="NCAE">NCAE Grade:</label>
+            <select id="NCAE" required>
+                <option value="">Select Grade</option>
+                <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
+                <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
+                <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
+                <option value="75-79 (FAIRLY SATISFACTORY)">75-79 (FAIRLY SATISFACTORY)</option>
+                <option value="Below 75 (DO NOT MEET EXPECTATIONS)">Below 75 (DO NOT MEET EXPECTATIONS)</option>
+            </select>
+            
+            <button type="submit" value="Submit Grades">Next page</button>
+        </form>
+    </div>
+    <script>
+        const selectMath = document.getElementById('Math');
+        const selectScience = document.getElementById('Science');
+        const selectEnglish = document.getElementById('English');
+        const selectNCAE = document.getElementById('NCAE');
+    </script>
+    <script>
+        function sendGrades(event) {
+            event.preventDefault();
+            const form = document.getElementById("gradeForm");
+            const formData = new FormData(form);
+        
+            const submitForm = document.createElement("form");
+            submitForm.method = "POST";
+            submitForm.action = "/recommend_grade"; // Flask endpoint
+        
+            ["Math", "English", "Science", "NCAE"].forEach(subject => {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = subject;
+                input.value = formData.get(subject);
+                submitForm.appendChild(input);
+            });
+        
+            document.body.appendChild(submitForm);
+            submitForm.submit();
+        }
+        </script>
+        
+</body>
+</html>

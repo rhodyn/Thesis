@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Personality Test</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!--css link-->
+        <link rel="stylesheet" href="../static/personality-style.css">
+        <style>
+          body {
+              animation: fadeIn 1s ease-in-out;
+              color: white;
+          }
+          @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+          }
+      </style>
+    </head>
+<body>
+    <div class="container fixed-nav">
+        <ul class="nav nav-tabs justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="#">Strand</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="#">Hobbies, Interest, and Career Aspirations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="#">Grades and Exam Results</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Personality Test</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark " href="#">Submit</a>
+            </li>
+        </ul>
+    </div>
+    <br><br><br>
+
+    <div class="main-page">
+        <h1>Personality Type Test</h1>
+        <div id="progress">Question <span id="questionNumber">1</span> of 10</div>
+        <div class="question-card" id="questionCard">
+            <div class="question" id="questionText"></div>
+            <input type="range" min="1" max="5" value="3" id="answerSlider">
+            <div class="slider-options">
+              <label class="pertype-ans">Strongly Disagree<br>(1)</label>
+              <label class="pertype-ans">Slightly Disagree<br>(2)</label>
+              <label class="pertype-ans3">Neutral<br>(3)</label>
+              <label class="pertype-ans">Slightly Agree<br>(4)</label>
+              <label class="pertype-ans">Strongly Agree<br>(5)</label>
+            </div>
+
+            <div class="navigation">
+              <button id="prevBtn">Previous</button>
+              <button id="nextBtn">Next</button>
+            </div>
+          </div>
+
+          <script>
+            function calculateBFIAndSubmit() {
+            const traits = {
+                O: [5, 10, 15, 20, 25, 30, 35, 40, 44],
+                C: [3, 8, 13, 18, 23, 28, 33, 38, 43],
+                E: [1, 6, 11, 16, 21, 26, 31, 36],
+                A: [2, 7, 12, 17, 22, 27, 32, 37, 42],
+                N: [4, 9, 14, 19, 24, 29, 34, 39, 41]
+            };
+
+            const reversed = [6, 21, 31, 2, 12, 27, 37, 9, 19, 29, 41, 8, 18, 23, 43];
+            const scores = { O: 0, C: 0, E: 0, A: 0, N: 0 };
+
+            for (let trait in traits) {
+                traits[trait].forEach(q => {
+                    let val = parseInt(document.querySelector(`input[name='q${q}']:checked`)?.value || 0);
+                    if (reversed.includes(q)) val = 6 - val;
+                    scores[trait] += val;
+                });
+            }
+
+            // Form to submit values to backend
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/recommend_person";
+
+            Object.keys(scores).forEach(trait => {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = trait;
+                input.value = scores[trait];
+                form.appendChild(input);
+            });
+
+            document.body.appendChild(form);
+            form.submit();
+            }
+          </script>
+          <script>
+            const questions = [
+              "I am someone who is talkative.",
+              "I am someone who tends to find fault with others.",
+              "I am someone who does a thorough job.",
+              "I am someone who is depressed.",
+              "I am someone who is original, comes up with new ideas.",
+              "I am someone who is reserved.",
+              "I am someone who is helpful and unselfish with others.",
+              "I am someone who can be somewhat careless.",
+              "I am someone who is relaxed, handles stress well.",
+              "I am someone who is curious about many different things.",
+              "I am someone who is full of energy.",
+              "I am someone who starts quarrel with others.",
+              "I am someone who is a reliable worker.",
+              "I am someone who can be tense.",
+              "I am someone who is ingenious, deep thinker.",
+              "I am someone who generates a lot of enthusiasm.",
+              "I am someone who has a forgiving nature.",
+              "I am someone who tends to be disorganized.",
+              "I am someone who worries a lot.",
+              "I am someone who has an active imagination.",
+              "I am someone who tends to be quiet.",
+              "I am someone who is generally trusting.",
+              "I am someone who tends to be lazy.",
+              "I am someone who is emotionally stable, not easily upset.",
+              "I am someone who is inventive.",
+              "I am someone who has an assertive personality.",
+              "I am someone who can be cold and aloof.",
+              "I am someone who perseveres until the task is finished.",
+              "I am someone who can be moody.",
+              "I am someone who values artistic.",
+              "I am someone who is sometimes shy, inhibited.",
+              "I am someone who is considerate and kind to almost.",
+              "I am someone who does things efficiently.",
+              "I am someone who remains calm in tense situations.",
+              "I am someone who prefers work that is routine.",
+              "I am someone who is outgoing, sociable.",
+              "I am someone who is sometimes rude to others.",
+              "I am someone who makes plans and follows through with them.",
+              "I am someone who gets nervous easily.",
+              "I am someone who likes to reflect, play with ideas.",
+              "I am someone who has few artistic interests.",
+              "I am someone who likes to cooperate with others.",
+              "I am someone who is easily distracted",
+              "I am someone who is sophisticated in art, music, or literature"
+            ];
+        
+            let currentQuestion = 0;
+            const responses = new Array(questions.length).fill(3);
+        
+            const questionText = document.getElementById('questionText');
+            const answerSlider = document.getElementById('answerSlider');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+        
+            function loadQuestion(index) {
+              questionText.textContent = `Question ${index + 1} of ${questions.length}: ${questions[index]}`;
+              answerSlider.value = responses[index];
+              prevBtn.disabled = index === 0;
+              nextBtn.textContent = index === questions.length - 1 ? "Submit" : "Next";
+            }
+        
+            answerSlider.addEventListener('input', () => {
+              responses[currentQuestion] = parseInt(answerSlider.value);
+            });
+        
+            prevBtn.addEventListener('click', () => {
+              if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion(currentQuestion);
+              }
+            });
+        
+            nextBtn.addEventListener('click', () => {
+              if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion(currentQuestion);
+              // } else {
+              //   console.log("Submitted responses:", responses);
+              //   alert("Thank you for completing the test! n\Processing your IT degree.....");
+              }
+            });
+        
+            loadQuestion(currentQuestion);
+          </script>
+</body>
+</html>

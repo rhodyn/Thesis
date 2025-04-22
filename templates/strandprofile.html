@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--css link-->
+    <link rel="stylesheet" href="../static/strand-style.css">
+    <style>
+        body {
+            animation: fadeIn 1s ease-in-out;
+            color: white;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container fixed-nav">
+        <ul class="nav nav-tabs justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Strand</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="#">Hobbies, Interest, and Career Aspirations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="#">Grades and Exam Results</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="#">Personality Test</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="#">Submit</a>
+            </li>
+        </ul>
+    </div>
+    <br><br><br>
+    <div class="main-page">
+            <h1>Senior High School Strand</h1>
+            <form id="profileForm" method="post" onsubmit="event.preventDefault(); collectAndSubmit();">
+                <div class="strand-box" data-value="Accountancy, Business and Management (ABM)">Accountancy, Business and Management (ABM)</div>
+                <div class="strand-box" data-value="Science, Technology, Engineering and Mathematics (STEM)">Science, Technology, Engineering and Mathematics (STEM)</div>
+                <div class="strand-box" data-value="Humanities and Social Sciences (HUMSS)">Humanities and Social Sciences (HUMSS)</div>
+                <div class="strand-box" data-value="General Academic Strand (GAS)">General Academic Strand (GAS)</div>
+                <div class="strand-box" data-value="Technical-Vocational-Livelihood (TVL) - Home Economics">Technical-Vocational-Livelihood (TVL) - Home Economics</div>
+                <div class="strand-box" data-value="Technical-Vocational-Livelihood (TVL) - Information and Communication Technology">Technical-Vocational-Livelihood (TVL) - Information and Communication Technology</div>
+                
+                <input type="hidden" name="selectedStrand" id="selectedStrand"><br>
+
+                <h1>Grade Level</h1>
+                <div class="grade-container">
+                    <div class="grade" data-value="Grade 11">Grade 11</div>
+                    <div class="grade" data-value="Grade 12">Grade 12</div>
+                </div><br>
+                
+                <input type="hidden" name="selectedGrade" id="selectedGrade">
+
+                <h1>Age</h1>
+                <div class="age-container">
+                    <label for="ageSelect">Select Age:</label><br><br>
+                    <select class="form-select" id="ageSelect" name="selectedAge">
+                        <option value="">Select Age</option>
+                        <option value="15 and below">15 years old and below</option>
+                        <option value="16">16 years old</option>
+                        <option value="17">17 years old</option>
+                        <option value="18">18 years old</option>
+                        <option value="19">19 years old</option>
+                        <option value="20 and above">20 years old and above</option>
+                    </select>
+                </div>
+                
+                <input type="hidden" name="selectedAge" id="selectedAge">
+                <br>
+                <h1>Gender</h1>
+                <div class="gender-container">
+                    <label for="genderSelect">Select:</label><br><br>
+                    <select class="form-select" id="genderSelect" name="selectedGender">
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <input type="hidden" name="selectedGender" id="selectedGender"><br>
+
+                <h1>Monthly Household Gross Income</h1>
+                <div class="income-container">
+                    <label for="incomeSelect">Select:</label><br><br>
+                    <select class="form-select" id="incomeSelect" name="selectedIncome">
+                        <option value="">Select Monthly Household Gross Income</option>
+                        <option value="Below 12,100">₱12,100 and below</option>
+                        <option value="12,101 - 24,200">₱12,100 - below ₱24,200</option>
+                        <option value="24,201 - 36,300">₱24,200 - below ₱48,400</option>
+                        <option value="48,401 - 84,600">₱48,400 - below ₱84,600</option>
+                        <option value="84,601 - 145,000">₱84,600 - below ₱145,000</option>
+                        <option value="145,001 - 241,700">₱145,000 - below ₱241,700</option>
+                        <option value="241,701">₱241,700 and above</option>
+                    </select>
+                </div>
+
+                <input type="hidden" name="selectedIncome" id="selectedIncome"><br>
+                
+                <button type="submit" class="btn btn-danger mt-3">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const strandBoxes = document.querySelectorAll('.strand-box');
+        const gradeBoxes = document.querySelectorAll('.grade');
+
+        const selectedStrandInput = document.getElementById('selectedStrand');
+        const selectedGradeInput = document.getElementById('selectedGrade');
+        const genderSelect = document.getElementById('genderSelect');
+        const ageSelect = document.getElementById('ageSelect');
+        const incomeSelect = document.getElementById('incomeSelect');
+
+        strandBoxes.forEach(box => {
+            box.addEventListener('click', function() {
+                strandBoxes.forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedStrandInput.value = this.getAttribute('data-value');
+            });
+        });
+
+        gradeBoxes.forEach(box => {
+            box.addEventListener('click', function() {
+                gradeBoxes.forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedGradeInput.value = this.getAttribute('data-value');
+            });
+        });
+
+        // Sends the data in an array to backend
+        function collectAndSubmit() {
+            const selects = document.querySelectorAll(".form-select");
+            const selectedValues = [];
+
+            selects.forEach(select => {
+                const selectedOption = select.options[select.selectedIndex];
+                const dataValue = selectedOption.getAttribute("data-value");
+                const finalValue = dataValue ? dataValue : selectedOption.value;
+                if (finalValue) {
+                    selectedValues.push(finalValue);
+                }
+            });
+
+            // Add to form as hidden input
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "student_input_array";
+            hiddenInput.value = JSON.stringify(selectedValues);
+
+            const form = document.getElementById("form1");
+            form.appendChild(hiddenInput);
+            form.submit();
+        }
+
+        // document.getElementById('profileForm').addEventListener('submit', function(event) {
+        //     event.preventDefault();
+        //     const selectedStrand = selectedStrandInput.value;
+        //     const selectedGrade = selectedGradeInput.value;
+        //     const selectedGender = genderSelect.value;
+        //     const selectedIncome = incomeSelect.value;
+        //     const selectedAge = ageSelect.value;
+
+
+
+        //     if (selectedStrand && selectedGrade && selectedGender && selectedAge && selectedIncome) {
+        //         alert('Selected Strand: ' + selectedStrand + '\nSelected Grade: ' + selectedGrade + '\nSelected Gender: ' + selectedGender + '\nSelected Age: ' + selectedAge + '\nSelected Monthly Income: ' + selectedIncome);
+        //     } else {
+        //         alert('Please select a strand, a grade, a gender, a gross monthly income, and an age before submitting.');
+        //     }
+        // });
+    </script>
+
+    <script src="../static/index-script.js"></script>
+</body>
+</html>

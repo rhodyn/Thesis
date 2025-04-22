@@ -1,8 +1,64 @@
 <!DOCTYPE html>
-<html>
-<head><title>ML App</title></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <!--css link-->
+    <link rel="stylesheet" href="../static/index-style.css">
+</head>
 <body>
-    <h1>Welcome to the Multi-Model Flask App</h1>
-    <p>Use Postman or cURL to send requests to the endpoints.</p>
+    <!--container for login-->
+    <div class="login-form">
+        <div class="form-container">
+            <!--container for user/admin-->
+            <div class="slide-controls">
+                <input type="radio" name="slide" id="login" checked>
+                <input type="radio" name="slide" id="signup">
+                <label for="login" class="slide login">User</label>
+                <label for="signup" class="slide signup">Admin</label>
+                <div class="slider-tab"></div>
+            </div>
+        </div>
+        <!--container for app title-->
+        <div style="margin-top: 8%;">
+            <h1 style="color: white; text-align: left; padding-left: 15%; margin-bottom: 5px;">IT Degree Program</h1>
+            <h1 style="color: white; text-align: left; padding-left: 15%; margin-top: 5px;">Recommender System</h1>
+        </div>
+        <!--container for input details-->
+        <div class="form-container">
+            <div class="form-inner">
+                <!--user login page-->
+                <form action="#" class="login" method="post">
+                <h4 style="color: white; text-align: left;">Name ( LastName, FirstName | Nickname )</h4>
+                <div class="field">
+                    <input type="text" placeholder="" required>
+                </div>
+                <div style="padding-left: 15%; margin-top: 8%;">
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" value="Continue">
+                    </div>
+                </div>
+                </form>
+                <!--admin login page-->
+                <form action="#" class="signup" method="post">
+                <div class="field">
+                    <input type="text" placeholder="Email Address" required>
+                </div>
+                <div class="field">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <div style="padding-left: 15%; margin-top: 8%;">
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" value="Login">
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../static/index-script.js"></script>
 </body>
 </html>
