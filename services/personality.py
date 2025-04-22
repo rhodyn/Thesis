@@ -5,7 +5,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import joblib
 
 # Load model and data values
-data = joblib.load('models/cbf-personality_model.pkl')
+data = joblib.load('models/cbf_personality-model.pkl')
 courses = data['courses']
 person_numeric = data['numeric_features']
 
