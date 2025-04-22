@@ -4,6 +4,5 @@ pandas
 numpy
 joblib
 gunicorn
-re
 seaborn
 matplotlib.pyplot
