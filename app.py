@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template, session, request, redirect, url_for
 from services import hobby, grades, personality
+import numpy as np
 import os
 
 app = Flask(__name__)
@@ -88,14 +89,19 @@ def studentgrade():
 @login_required
 def personality_test():
     if request.method == "POST":
-        user_input = {
-            'Extraversion': float(request.form['E']),
-            'Agreeableness': float(request.form['A']),
-            'Conscientiousness': float(request.form['C']),
-            'Neuroticism': float(request.form['N']),
-            'Openness': float(request.form['O'])
-        }
-        session["personality"] = user_input
+        # user_input = {
+        #     'Extraversion': float(request.form['E']),
+        #     'Agreeableness': float(request.form['A']),
+        #     'Conscientiousness': float(request.form['C']),
+        #     'Neuroticism': float(request.form['N']),
+        #     'Openness': float(request.form['O'])
+        # }
+        # session["personality"] = user_input
+
+        scores = request.form.get("bfi_scores")
+        if scores:
+            score_array = eval(scores)  # Turn string into list
+            session["personality"] = score_array
         return redirect(url_for("result"))
     return render_template("bfi-test.html")
 
