@@ -119,7 +119,7 @@ def result():
     grade_final = grades.recommend_grade(input2)
     person_final = personality.recommend_person(input3)
 
-    return render_template("result.html", hobby_final=hobby_final, grade_final=grade_final, person_final=person_final)
+    return render_template("results.html", hobby_final=hobby_final, grade_final=grade_final, person_final=person_final)
 
 if __name__ == "__main__":
     app.run(debug=True)
