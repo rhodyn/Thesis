@@ -90,8 +90,30 @@
         const selectScience = document.getElementById('Science');
         const selectEnglish = document.getElementById('English');
         const selectNCAE = document.getElementById('NCAE');
+
+        function submitGrades() {
+            const gradeArray = [
+                document.getElementById("Math").value,
+                document.getElementById("Science").value,
+                document.getElementById("English").value,
+                document.getElementById("NCAE").value
+            ];
+
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/student_grade";
+
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "grades";
+            input.value = JSON.stringify(gradeArray);
+            form.appendChild(input);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
     </script>
-    <script>
+    <!-- <script>
         function sendGrades(event) {
             event.preventDefault();
             const form = document.getElementById("gradeForm");
@@ -112,7 +134,7 @@
             document.body.appendChild(submitForm);
             submitForm.submit();
         }
-        </script>
+    </script> -->
         
 </body>
 </html>
