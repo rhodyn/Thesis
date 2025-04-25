@@ -80,7 +80,7 @@ def studentgrade():
             'NCAE': request.form['NCAE'],
         }
         session["grade"] = user_input
-        return redirect(url_for("bfi-test"))
+        return redirect(url_for("personality_test"))
     return render_template("studentgrade.html")
 
 # Personality page (Page 4 of user input)
