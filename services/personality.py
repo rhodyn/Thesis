@@ -13,7 +13,7 @@ person_numeric = data['numeric_features']
 def recommend_person(user_input):
     
     # Stores input as array
-    student_data = np.array([[user_input]])
+    student_data = np.array([user_input])
 
     # Compute cosine simularity with all courses
     similarities = cosine_similarity(student_data, person_numeric)[0]
