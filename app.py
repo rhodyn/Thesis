@@ -25,7 +25,7 @@ def login():
 def login_required(route_func):
     def wrapper(*args, **kwargs):
         if not session.get("logged_in"):
-            return redirect(url_for("index"))
+            return redirect(url_for("/"))
         return route_func(*args, **kwargs)
     wrapper.__name__ = route_func.__name__
     return wrapper
@@ -111,7 +111,7 @@ def personality_test():
 def result():
     # Loading data collected from user input pages
     input1 = session.get("hobbies", "")
-    input2 = session.get("grade", [])
+    input2 = session.get("grade", {})
     input3 = session.get("personality", [])
 
     # Model prediction with collected user input
