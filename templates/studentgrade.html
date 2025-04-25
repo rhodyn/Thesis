@@ -44,7 +44,7 @@
         <form id="gradeForm" onsubmit="sendGrades(event)">
             <label for="Math">Mathematics:</label>
             <select id="Math" required>
-                <option value="">Select Grade</option>
+                <!-- <option value="0">Select Grade</option> -->
                 <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
                 <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
                 <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
@@ -54,7 +54,7 @@
             
             <label for="Science">Science:</label>
             <select id="Science" required>
-                <option value="">Select Grade</option>
+                <!-- <option value="0">Select Grade</option> -->
                 <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
                 <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
                 <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
@@ -64,7 +64,7 @@
             
             <label for="English">English:</label>
             <select id="English" required>
-                <option value="">Select Grade</option>
+                <!-- <option value="0">Select Grade</option> -->
                 <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
                 <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
                 <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
@@ -74,7 +74,7 @@
             
             <label for="NCAE">NCAE Grade:</label>
             <select id="NCAE" required>
-                <option value="">Select Grade</option>
+                <!-- <option value="0">Select Grade</option> -->
                 <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
                 <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
                 <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
@@ -101,7 +101,7 @@
             submitForm.method = "POST";
             submitForm.action = "/studentgrade"; // Flask endpoint
         
-            ["Math", "English", "Science", "NCAE"].forEach(subject => {
+            ["Math", "Science", "English", "NCAE"].forEach(subject => {
                 const input = document.createElement("input");
                 input.type = "hidden";
                 input.name = subject;
