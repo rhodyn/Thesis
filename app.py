@@ -76,8 +76,8 @@ def studentgrade():
     if request.method == "POST":
         user_input = {
             'Math': request.form['Math'],
-            'English': request.form['English'],
             'Science': request.form['Science'],
+            'English': request.form['English'],
             'NCAE': request.form['NCAE'],
         }
         session["grade"] = user_input
