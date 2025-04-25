@@ -78,8 +78,9 @@ def studentgrade():
             'Math': request.form['Math'],
             'Science': request.form['Science'],
             'English': request.form['English'],
-            'NCAE': request.form['NCAE'],
+            'NCAE': request.form['NCAE']
         }
+
         session["grade"] = user_input
         return redirect(url_for("personality_test"))
     return render_template("studentgrade.html")
@@ -111,8 +112,8 @@ def personality_test():
 def result():
     # Loading data collected from user input pages
     input1 = session.get("hobbies", "")
-    input2 = session.get("grade", {})
-    input3 = session.get("personality", [])
+    input2 = session.get("grade", [[]])
+    input3 = session.get("personality", [[]])
 
     # Model prediction with collected user input
     hobby_final = hobby.recommend_hobby(input1)
