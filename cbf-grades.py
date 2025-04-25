@@ -25,7 +25,7 @@ def extract_range_average(text):
     return None  # Return None if pattern not found
 
 # Convert subject column
-subject_columns = ['Math', 'Science', 'English', 'NCAE', 'CET']
+subject_columns = ['Math', 'Science', 'English', 'NCAE']
 for col in subject_columns:
     data[col] = data[col].apply(extract_range_average)
 
