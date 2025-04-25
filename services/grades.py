@@ -10,6 +10,8 @@ data = joblib.load('models/cbf_grades-model.pkl')
 courses = data['courses']
 grades_numeric = data['numeric_features']
 
+print(grades_numeric)
+
 # Predict function
 def recommend_grade(user_input):
     # Extract grade ranges from text input
@@ -29,9 +31,11 @@ def recommend_grade(user_input):
     student_data = [extract_range_average(text) for text in user_input]
     student_data = [student_data]
     
-     # Compute cosine similarity with all courses
+    # Compute cosine similarity with all courses
     similarities = cosine_similarity(student_data, grades_numeric)
 
     # Get most similar course
-    best_match_index = np.argmax(similarities)
-    return courses.iloc[best_match_index]['Course']
+    # best_match_index = np.argmax(similarities)
+    best_match_index = similarities.argmax()
+    recommended_course = courses[best_match_index]
+    return recommended_course
