@@ -74,13 +74,13 @@ def hobbies():
 def studentgrade():
     if request.method == "POST":
         user_input = {
-                'Math': request.form['Math'],
-                'English': request.form['English'],
-                'Science': request.form['Science'],
-                'NCAE': request.form['NCAE'],
+            'Math': request.form['Math'],
+            'English': request.form['English'],
+            'Science': request.form['Science'],
+            'NCAE': request.form['NCAE'],
         }
         session["grade"] = user_input
-        return redirect(url_for("personality_test"))
+        return redirect(url_for("bfi-test"))
     return render_template("studentgrade.html")
 
 # Personality page (Page 4 of user input)
@@ -89,15 +89,15 @@ def studentgrade():
 def personality_test():
     if request.method == "POST":
         user_input = {
-                'Extraversion': float(request.form['E']),
-                'Agreeableness': float(request.form['A']),
-                'Conscientiousness': float(request.form['C']),
-                'Neuroticism': float(request.form['N']),
-                'Openness': float(request.form['O'])
+            'Extraversion': float(request.form['E']),
+            'Agreeableness': float(request.form['A']),
+            'Conscientiousness': float(request.form['C']),
+            'Neuroticism': float(request.form['N']),
+            'Openness': float(request.form['O'])
         }
         session["personality"] = user_input
         return redirect(url_for("result"))
-    return render_template("personality_test.html")
+    return render_template("bfi-test.html")
 
 # Results page (Page 5)
 @app.route("/result", methods=["GET", "POST"])
