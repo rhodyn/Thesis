@@ -74,14 +74,23 @@ def hobbies():
 @login_required
 def studentgrade():
     if request.method == "POST":
-        user_input = {
-            'Math': request.form['Math'],
-            'Science': request.form['Science'],
-            'English': request.form['English'],
-            'NCAE': request.form['NCAE']
-        }
+        import json
+        # grade_input = {
+        #     'Math': request.form['Math'],
+        #     'Science': request.form['Science'],
+        #     'English': request.form['English'],
+        #     'NCAE': request.form['NCAE']
+        # }
+        # user_input = [
+        #     user_input.request.form
+        # ]
 
-        session["grade"] = user_input
+        # session["grade"] = grade_input
+
+        grades_json = request.form.get("grades")
+        if grades_json:
+            grade_array = json.loads(grades_json)
+            session["grade"] = grade_array 
         return redirect(url_for("personality_test"))
     return render_template("studentgrade.html")
 
@@ -112,8 +121,8 @@ def personality_test():
 def result():
     # Loading data collected from user input pages
     input1 = session.get("hobbies", "")
-    input2 = session.get("grade", [[]])
-    input3 = session.get("personality", [[]])
+    input2 = session.get("grade", [])
+    input3 = session.get("personality", [])
 
     # Model prediction with collected user input
     hobby_final = hobby.recommend_hobby(input1)
