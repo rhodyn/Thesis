@@ -133,15 +133,15 @@ def result():
 
     if frequency == 3:
         final_recommendation = [most_common_course]
-        message = f"All models strongly agree that the best course for you is '{most_common_course}'."
+        message = f"Based on the recommendation system, you are very suitable for '{most_common_course}'."
     elif frequency == 2:
         final_recommendation = [most_common_course]
-        message = f"Two models agree that '{most_common_course}' is the best match for your profile."
+        message = f"Based on the recommendation system, you have good compatibility for '{most_common_course}'"
     else:
         final_recommendation = model_result
-        message = "The models provided different recommendations based on your input. Here are the top suggestions to consider."
+        message = "It seems that you don't have high compatibility with IT degree courses. Regardless, here are some you can consider."
 
-    return render_template("results.html", hobby_final=hobby_final, grade_final=grade_final, person_final=person_final)
+    return render_template("results.html", recommendations=final_recommendation, message=message)
 
 if __name__ == "__main__":
     app.run(debug=True)
