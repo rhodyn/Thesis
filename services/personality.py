@@ -24,4 +24,6 @@ def recommend_person(user_input):
     # Sort by similarity score
     results.sort(key=lambda x: x[1], reverse=True)
 
-    return results[0]
+    final = [course for course, _ in results]
+
+    return final[0]
