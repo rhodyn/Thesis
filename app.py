@@ -133,15 +133,21 @@ def result():
 
     if frequency == 3:
         final_recommendation = [most_common_course]
-        message = f"Based on the recommendation system, you are very suitable for '{most_common_course}'."
+        message = f"Based on the Recommendation System, You are very suitable for '{most_common_course}'."
     elif frequency == 2:
         final_recommendation = [most_common_course]
-        message = f"Based on the recommendation system, you have good compatibility for '{most_common_course}'"
+        message = f"Based on the Recommendation System, You have good compatibility for '{most_common_course}'"
     else:
         final_recommendation = model_result
-        message = "It seems that you don't have high compatibility with IT degree courses. Regardless, here are some you can consider."
+        message = "It seems that you don't have high compatibility with IT Degree Courses. Regardless, here are some you can consider."
 
     return render_template("results.html", recommendations=final_recommendation, message=message)
+
+@app.route('/end_session', methods=['POST'])
+@login_required
+def end_session():
+    session.clear()  # Clear all session data
+    return redirect(url_for('/'))  # Redirect to the index route
 
 if __name__ == "__main__":
     app.run(debug=True)
