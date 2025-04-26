@@ -54,8 +54,9 @@ def login():
     # # Admin login check
     # if email in ADMIN_EMAILS and password == ADMIN_PASSWORD:
     #     session['admin_logged_in'] = True
-    #     return redirect('/view_submissions')   
-    # return "Username cannot be empty."
+    #     return redirect('/view_submissions')  
+     
+    return "Username cannot be empty."
 
 def login_required(route_func):
     def wrapper(*args, **kwargs):
