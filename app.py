@@ -43,20 +43,20 @@ def home():
 def login():
     username = request.form["username"]
 
-    email = request.form['email']
-    password = request.form['password']
+    # email = request.form['email']
+    # password = request.form['password']
 
     if username:  # Accepts non empty values
         session["logged_in"] = True
         session["username"] = username  # Store username
-        return redirect(url_for("strandprofile"))  
+        return redirect(url_for("strandprofile"))
+    return "Username cannot be empty."
     
     # # Admin login check
     # if email in ADMIN_EMAILS and password == ADMIN_PASSWORD:
     #     session['admin_logged_in'] = True
     #     return redirect('/view_submissions')  
      
-    return "Username cannot be empty."
 
 def login_required(route_func):
     def wrapper(*args, **kwargs):
@@ -73,11 +73,11 @@ def login_required(route_func):
 #     results = UserResult.query.all()
 #     return render_template("view_submissions.html", results=results)
 
-@app.route('/logout')
-@login_required
-def logout():
-    session.clear()
-    return redirect(url_for("home"))
+# @app.route('/logout')
+# @login_required
+# def logout():
+#     session.clear()
+#     return redirect(url_for("home"))
 
 # Strand profile page (Page 1 of user input)
 @app.route("/strandprofile", methods=["GET", "POST"])
