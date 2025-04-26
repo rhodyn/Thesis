@@ -3,9 +3,30 @@ from services import hobby, grades, personality
 import numpy as np
 import os
 from collections import Counter
+# from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "fallback_dev_key") # Required for sessions
+
+# # Loads database and required data variables
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user_data.db' 
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# db = SQLAlchemy(app)
+
+# class UserResult(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     username = db.Column(db.String(100))
+#     profile = db.Column(db.String(1000))  
+#     hobbies = db.Column(db.String(10000))
+#     grade = db.Column(db.String(1000))
+#     personality = db.Column(db.String(100))
+#     recommendation = db.Column(db.String(500))
+
+#     def __init__(self, username, bfi_scores, grade_ranges, recommendation):
+#         self.username = username
+#         self.bfi_scores = bfi_scores
+#         self.grade_ranges = grade_ranges
+#         self.recommendation = recommendation
 
 # Loads index page
 @app.route('/')
@@ -133,14 +154,15 @@ def result():
 
     if frequency == 3:
         final_recommendation = [most_common_course]
-        message = f"Based on the Recommendation System, You are very suitable for '{most_common_course}'."
+        message = f"Based on the Recommendation System, You are very suitable for \n'{most_common_course}'."
     elif frequency == 2:
         final_recommendation = [most_common_course]
-        message = f"Based on the Recommendation System, You have good compatibility for '{most_common_course}'"
+        message = f"Based on the Recommendation System, You have good compatibility for \n'{most_common_course}'"
     else:
         final_recommendation = model_result
         message = "It seems that you don't have high compatibility with IT Degree Courses. Regardless, here are some you can consider."
 
+    session["recommendation"] = final_recommendation
     return render_template("results.html", recommendations=final_recommendation, message=message)
 
 @app.route('/end_session', methods=['POST'])
