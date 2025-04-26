@@ -2,23 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Recommendations</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f4;
-            margin: 0;
         }
-
         .content {
             text-align: center;
         }
-
+        h2 {
+            margin-bottom: 30px;
+        }
         .course-card {
             background: #fff;
             border-radius: 8px;
@@ -28,20 +28,11 @@
             display: inline-block;
             width: 200px;
             height: 250px;
-            text-align: center;
             vertical-align: top;
-            transition: transform 0.3s ease-in-out;
         }
-
-        .course-card:hover {
-            transform: translateY(-10px);
-        }
-
         .course-card h3 {
             margin-bottom: 15px;
-            font-size: 18px;
         }
-
         .course-card button {
             padding: 10px;
             background-color: #007bff;
@@ -50,90 +41,52 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
-        .course-card button:hover {
-            background-color: #0056b3;
-        }
-
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
-
         .modal.show {
             display: flex;
         }
-
         .modal-content {
-            background-color: white;
+            background: white;
             padding: 20px;
             border-radius: 8px;
-            max-width: 400px;
             width: 80%;
-            animation: modalAnimation 0.5s ease-in-out;
+            max-width: 400px;
+            animation: slideIn 0.4s ease-out;
         }
-
-        @keyframes modalAnimation {
-            0% {
-                transform: translateY(100%);
-            }
-            100% {
-                transform: translateY(0);
-            }
-        }
-
-        .modal-content h2 {
-            margin-top: 0;
-        }
-
-        .modal-content p {
-            margin: 15px 0;
+        @keyframes slideIn {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
     <div class="content">
-        <h2>Recommended Courses</h2>
-        <div class="course-card">
-            <h3>Computer Science</h3>
-            <button onclick="openModal('Bachelor of Science in Computer Science (BSCS)')">Learn More</button>
-        </div>
+        <h2>{{ message }}</h2>
 
+        {% for course in recommendations %}
         <div class="course-card">
-            <h3>Information Technology</h3>
-            <button onclick="openModal('Bachelor of Science in Information Technology (BSIT)')">Learn More</button>
+            <h3>{{ course }}</h3>
+            <button onclick="openModal('{{ course }}')">Learn More</button>
         </div>
-
-        <div class="course-card">
-            <h3>Business Administration</h3>
-            <button onclick="openModal('Bachelor of Science in Entertainment and Multimedia Computing (BSEMC)')">Learn More</button>
-        </div>
-
-        <div class="course-card">
-            <h3>Psychology</h3>
-            <button onclick="openModal('Bachelor of Science in Entertainment and Multimedia Computing (BSEMCG)')">Learn More</button>
-        </div>
-
-        <div class="course-card">
-            <h3>Engineering</h3>
-            <button onclick="openModal('Bachelor of Science in Data Science (BSDS)')">Learn More</button>
-        </div>
+        {% endfor %}
     </div>
 
-    <!-- Modal HTML -->
+    <!-- Modal -->
     <div id="courseModal" class="modal" onclick="closeModal(event)">
         <div class="modal-content" id="modalContent">
-            <!-- JS will inject the title and description here -->
+            <!-- Injected by JS -->
         </div>
     </div>
+
     <script>
         const courseDescriptions = {
             "Bachelor of Science in Computer Science (BSCS)": "The Bachelor of Science in Computer Science program emphasizes comprehension of the principles and concepts needed for designing and formulating new systems and applications. It encourages the inquisitive pursuit and investigation of new ideas and developments to prepare the student for a subsequent Master’s degree program.",
@@ -146,86 +99,20 @@
         function openModal(course) {
             const modal = document.getElementById("courseModal");
             const modalContent = document.getElementById("modalContent");
-
-            // Update the modal content dynamically based on course name
             modalContent.innerHTML = `
                 <h2>${course}</h2>
                 <p>${courseDescriptions[course] || "No description available."}</p>
                 <button onclick="closeModal()">Close</button>
             `;
-
             modal.classList.add("show");
         }
 
         function closeModal(event) {
             const modal = document.getElementById("courseModal");
-
-            // Close modal if clicked outside the modal content
-            if (event.target === modal) {
+            if (event.target === modal || event.target.textContent === "Close") {
                 modal.classList.remove("show");
             }
         }
     </script>
-    <!-- <script>
-        // function openModal(course) {
-        //     const modal = document.getElementById("modal");
-        //     const modalContent = document.getElementById("modal-description");
-        //     modalContent.innerText = getCourseDescription(course);
-        //     modal.classList.add("show");
-        // }
-
-        // function closeModal() {
-        //     const modal = document.getElementById("modal");
-        //     modal.classList.remove("show");
-        // }
-
-        // function getCourseDescription(course) {
-        //     const descriptions = {
-        //         "Bachelor of Science in Computer Science (BSCS)": "The Bachelor of Science in Computer Science program emphasizes comprehension of the principles and concepts needed for designing and formulating new systems and applications. It encourages the inquisitive pursuit and investigation of new ideas and developments to prepare the student for a subsequent Master’s degree program.",
-        //         "Bachelor of Science in Information Technology (BSIT)": "The Bachelor of Science in Information Technology program emphasizes the acquisition of concepts and technologies, preparing and enabling the student for the industrial practice of systems integration, systems administration, systems planning, systems implementation, and other activities that maintain the integrity and proper functionality of a system and its components. It is expected that a student graduating under this degree program had undergraduate or industry preparation that would have exposed him/her to programming concepts and skills as well as the operating environment of a network system.",
-        //         "Bachelor of Science in Entertainment and Multimedia Computing (BSEMC)": "The Bachelor of Science in Entertainment and Multimedia Computing (BSEMC) program, with specialization in Digital Animation, aims to prepare students to be digital animation professionals, who are equipped with creative and technical knowledge, skills and values in conceptualizing, designing, and producing animation products and solutions, and in managing such projects over different technology platforms.",
-        //         "Bachelor of Science in Entertainment and Multimedia Computing (BSEMCG)": "The Bachelor of Science in Entertainment and Multimedia Computing (BSEMCG) program, with specialization in Game development professionals, who are equipped with creative and technical knowledge, skills and values in conceptualizing, designing, and producing digital games and tools, and in managing such projects over different technology platforms.",
-        //         "Bachelor of Science in Data Science (BSDS)": "The BSDS program includes the study of data and the methodologies, processes, algorithms, and systems for collecting, refining, storing, and analyzing data to arrive at useful insights and knowledge. Data Science is a discipline in computing that benefits from developments in computer science, mathematics, statistics, business, and other disciplines."
-        //     };
-        //     return descriptions[course] || "No description available.";
-        // }
-
-        // // Close modal on click outside
-        // window.onclick = function(event) {
-        //     const modal = document.getElementById("courseModal");
-        //     if (event.target === modal) {
-        //         modal.style.display = "none";
-        //     }
-        // }
-        const courseDescriptions = {
-            "Bachelor of Science in Computer Science (BSCS)": "The Bachelor of Science in Computer Science program emphasizes comprehension of the principles and concepts needed for designing and formulating new systems and applications. It encourages the inquisitive pursuit and investigation of new ideas and developments to prepare the student for a subsequent Master’s degree program.",
-            "Bachelor of Science in Information Technology (BSIT)": "The Bachelor of Science in Information Technology program emphasizes the acquisition of concepts and technologies, preparing and enabling the student for the industrial practice of systems integration, systems administration, systems planning, systems implementation, and other activities that maintain the integrity and proper functionality of a system and its components. It is expected that a student graduating under this degree program had undergraduate or industry preparation that would have exposed him/her to programming concepts and skills as well as the operating environment of a network system.",
-            "Bachelor of Science in Entertainment and Multimedia Computing (BSEMC)": "The Bachelor of Science in Entertainment and Multimedia Computing (BSEMC) program, with specialization in Digital Animation, aims to prepare students to be digital animation professionals, who are equipped with creative and technical knowledge, skills and values in conceptualizing, designing, and producing animation products and solutions, and in managing such projects over different technology platforms.",
-            "Bachelor of Science in Entertainment and Multimedia Computing (BSEMCG)": "The Bachelor of Science in Entertainment and Multimedia Computing (BSEMCG) program, with specialization in Game development professionals, who are equipped with creative and technical knowledge, skills and values in conceptualizing, designing, and producing digital games and tools, and in managing such projects over different technology platforms.",
-            "Bachelor of Science in Data Science (BSDS)": "The BSDS program includes the study of data and the methodologies, processes, algorithms, and systems for collecting, refining, storing, and analyzing data to arrive at useful insights and knowledge. Data Science is a discipline in computing that benefits from developments in computer science, mathematics, statistics, business, and other disciplines."
-        };
-
-        function openModal(course) {
-            const modal = document.getElementById("courseModal");
-            const modalContent = document.getElementById("modalContent");
-
-            // Inject course title and description
-            modalContent.innerHTML = `
-                <h2>${course}</h2>
-                <p>${courseDescriptions[course] || "No description available."}</p>
-            `;
-
-            modal.classList.add("show");
-        }
-
-        function closeModal(event) {
-            const modal = document.getElementById("courseModal");
-
-            // Close only if clicking outside modal-content
-            if (event.target.id === "courseModal") {
-                modal.classList.remove("show");
-            }
-        }
-    </script> -->
 </body>
 </html>
