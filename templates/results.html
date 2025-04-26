@@ -7,27 +7,33 @@
             font-family: Arial, sans-serif;
             padding: 40px;
             background-color: #f8f9fa;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
+    
         .container {
-            max-width: 900px;
-            margin: auto;
+            width: 100%;
+            max-width: 1200px;
             text-align: center;
         }
-
+    
         .message {
             font-size: 1.2em;
             margin-bottom: 30px;
             color: #333;
         }
-
+    
         .card-wrapper {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
             justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
         }
-
+    
         .course-card {
             background: white;
             border-radius: 12px;
@@ -37,18 +43,18 @@
             text-align: center;
             transition: transform 0.2s ease;
         }
-
+    
         .course-card:hover {
             transform: translateY(-5px);
         }
-
+    
         .course-title {
             font-size: 1.3em;
             font-weight: bold;
             color: #007bff;
             margin-bottom: 10px;
         }
-
+    
         .btn {
             padding: 10px 15px;
             background-color: #007bff;
@@ -57,7 +63,7 @@
             border-radius: 6px;
             cursor: pointer;
         }
-
+    
         .modal {
             display: none;
             position: fixed;
@@ -66,30 +72,51 @@
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
             background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease forwards;
         }
 
         .modal-content {
             background-color: white;
-            margin: 10% auto;
-            padding: 20px;
-            border-radius: 10px;
-            width: 80%;
+            border-radius: 20px 20px 0 0;
+            width: 100%;
             max-width: 500px;
+            padding: 30px;
             position: relative;
+            transform: translateY(100%);
+            animation: slideUp 0.3s ease forwards;
+        }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                background-color: rgba(0,0,0,0);
+            }
+            to {
+                background-color: rgba(0,0,0,0.5);
+            }
         }
 
         .close {
-            color: #aaa;
             position: absolute;
             right: 20px;
-            top: 10px;
+            top: 15px;
             font-size: 24px;
-            font-weight: bold;
             cursor: pointer;
+            color: #aaa;
         }
-
+    
         .close:hover {
             color: black;
         }
@@ -117,24 +144,35 @@
             <p id="modal-description"></p>
         </div>
     </div>
+    <div id="modal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p id="modal-description">Course details go here.</p>
+        </div>
+    </div>
 
     <script>
-        const courseDescriptions = {
-            "BSCS": "The Bachelor of Science in Computer Science program emphasizes comprehension of the principles and concepts needed for designing and formulating new systems and applications. It encourages the inquisitive pursuit and investigation of new ideas and developments to prepare the student for a subsequent Master’s degree program.",
-            "BSIT": "The Bachelor of Science in Information Technology program emphasizes the acquisition of concepts and technologies, preparing and enabling the student for the industrial practice of systems integration, systems administration, systems planning, systems implementation, and other activities that maintain the integrity and proper functionality of a system and its components. It is expected that a student graduating under this degree program had undergraduate or industry preparation that would have exposed him/her to programming concepts and skills as well as the operating environment of a network system.",
-            "BSEMC-DA": "The Bachelor of Science in Entertainment and Multimedia Computing (BSEMC) program, with specialization in Digital Animation, aims to prepare students to be digital animation professionals, who are equipped with creative and technical knowledge, skills and values in conceptualizing, designing, and producing animation products and solutions, and in managing such projects over different technology platforms.",
-            "BSEMC-GD": "The Bachelor of Science in Entertainment and Multimedia Computing (BSEMCG) program, with specialization in Game development professionals, who are equipped with creative and technical knowledge, skills and values in conceptualizing, designing, and producing digital games and tools, and in managing such projects over different technology platforms.",
-            "BSDS": "The BSDS program includes the study of data and the methodologies, processes, algorithms, and systems for collecting, refining, storing, and analyzing data to arrive at useful insights and knowledge. Data Science is a discipline in computing that benefits from developments in computer science, mathematics, statistics, business, and other disciplines."
-        };
-
-        function openModal(courseName) {
-            document.getElementById("modal-title").innerText = courseName;
-            document.getElementById("modal-description").innerText = courseDescriptions[courseName] || "Description not available.";
-            document.getElementById("courseModal").style.display = "block";
+        function openModal(course) {
+            const modal = document.getElementById("modal");
+            const modalContent = document.getElementById("modal-description");
+            modalContent.innerText = getCourseDescription(course);
+            modal.classList.add("show");
         }
 
         function closeModal() {
-            document.getElementById("courseModal").style.display = "none";
+            const modal = document.getElementById("modal");
+            modal.classList.remove("show");
+        }
+
+        function getCourseDescription(course) {
+            const descriptions = {
+                "Bachelor of Science in Computer Science (BSCS)": "The Bachelor of Science in Computer Science program emphasizes comprehension of the principles and concepts needed for designing and formulating new systems and applications. It encourages the inquisitive pursuit and investigation of new ideas and developments to prepare the student for a subsequent Master’s degree program.",
+                "Bachelor of Science in Information Technology (BSIT)": "The Bachelor of Science in Information Technology program emphasizes the acquisition of concepts and technologies, preparing and enabling the student for the industrial practice of systems integration, systems administration, systems planning, systems implementation, and other activities that maintain the integrity and proper functionality of a system and its components. It is expected that a student graduating under this degree program had undergraduate or industry preparation that would have exposed him/her to programming concepts and skills as well as the operating environment of a network system.",
+                "Bachelor of Science in Entertainment and Multimedia Computing (BSEMC)": "The Bachelor of Science in Entertainment and Multimedia Computing (BSEMC) program, with specialization in Digital Animation, aims to prepare students to be digital animation professionals, who are equipped with creative and technical knowledge, skills and values in conceptualizing, designing, and producing animation products and solutions, and in managing such projects over different technology platforms.",
+                "Bachelor of Science in Entertainment and Multimedia Computing (BSEMCG)": "The Bachelor of Science in Entertainment and Multimedia Computing (BSEMCG) program, with specialization in Game development professionals, who are equipped with creative and technical knowledge, skills and values in conceptualizing, designing, and producing digital games and tools, and in managing such projects over different technology platforms.",
+                "Bachelor of Science in Data Science (BSDS)": "The BSDS program includes the study of data and the methodologies, processes, algorithms, and systems for collecting, refining, storing, and analyzing data to arrive at useful insights and knowledge. Data Science is a discipline in computing that benefits from developments in computer science, mathematics, statistics, business, and other disciplines."
+            };
+            return descriptions[course] || "No description available.";
         }
 
         // Close modal on click outside
