@@ -1,37 +1,35 @@
-from flask import Flask, request, jsonify, render_template, session, request, redirect, url_for
+from flask import Flask, request, jsonify, render_template, session, request, redirect, url_for, make_response
 from services import hobby, grades, personality
 import numpy as np
 import os
+import csv
 from collections import Counter
-# from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "fallback_dev_key") # Required for sessions
 
-# # List of admin emails
-# ADMIN_EMAILS = ['rances.christianalexandra@ue.edu.ph', 'lopez.adrian1@ue.edu.ph', 'rosaldo.asiadominic@ue.edu.ph','baris.sherwin@ue.edu.ph','sipe,rasselavielrodyn@ue.edu.ph','rex.bringula@ue.edu.ph']
-# ADMIN_PASSWORD = 'admin123'
+# Loads database and required data variables
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user_data.db' 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
+class UserResult(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100))
+    profile = db.Column(db.String(1000))  
+    hobbies = db.Column(db.String(10000))
+    grade = db.Column(db.String(1000))
+    personality_result = db.Column(db.String(100))
+    recommendation = db.Column(db.String(500))
 
-# # Loads database and required data variables
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user_data.db' 
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# db = SQLAlchemy(app)
-
-# class UserResult(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     username = db.Column(db.String(100))
-#     profile = db.Column(db.String(1000))  
-#     hobbies = db.Column(db.String(10000))
-#     grade = db.Column(db.String(1000))
-#     personality = db.Column(db.String(100))
-#     recommendation = db.Column(db.String(500))
-
-#     def __init__(self, username, bfi_scores, grade_ranges, recommendation):
-#         self.username = username
-#         self.bfi_scores = bfi_scores
-#         self.grade_ranges = grade_ranges
-#         self.recommendation = recommendation
+    def __init__(self, username, profile, hobbies, grade, personality_result, recommendation):
+        self.username = username
+        self.profile = profile
+        self.hobbies = hobbies
+        self.grade = grade
+        self.personality_result = personality_result
+        self.recommendation = recommendation
 
 # Loads index page
 @app.route('/')
@@ -39,23 +37,50 @@ def home():
     return render_template('index.html')
 
 # Validates username input on index before moving to next page
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    username = request.form["username"]
+    # username = request.form["username"]
 
     # email = request.form['email']
     # password = request.form['password']
 
-    if username:  # Accepts non empty values
-        session["logged_in"] = True
-        session["username"] = username  # Store username
-        return redirect(url_for("strandprofile"))
-    return "Username cannot be empty."
+    # if username:  # Accepts non empty values
+    #     session["logged_in"] = True
+    #     session["username"] = username  # Store username
+    #     return redirect(url_for("strandprofile"))
+    
     
     # # Admin login check
     # if email in ADMIN_EMAILS and password == ADMIN_PASSWORD:
     #     session['admin_logged_in'] = True
-    #     return redirect('/view_submissions')  
+    #     return redirect('/view_submissions')
+
+    # List of admin emails
+    ADMIN_EMAILS = ['rances.christianalexandra@ue.edu.ph', 'lopez.adrian1@ue.edu.ph', 'rosaldo.asiadominic@ue.edu.ph','baris.sherwin@ue.edu.ph','sipe.rasselavielrodyn@ue.edu.ph','rex.bringula@ue.edu.ph']
+    ADMIN_PASSWORD = 'admin123'
+    
+    if request.method == "POST":
+        username = request.form.get('username')
+        password = request.form.get('password')
+        role = request.form.get('role')  # important!
+
+        if role == "Continue":
+            # User login logic
+            session["logged_in"] = True
+            session['username'] = username
+            return redirect(url_for("strandprofile"))  # or wherever your user dashboard is
+        
+        elif role == "Login":
+            # Admin login logic
+            if username in ADMIN_EMAILS and password == ADMIN_PASSWORD:  # Example
+                session['admin'] = True
+                return redirect('/view_submissions')  # view database maybe
+            else:
+                return "Invalid admin credentials", 401
+        
+        else:
+            return "Unknown role", 400
+    return "Username cannot be empty."
      
 
 def login_required(route_func):
@@ -65,19 +90,6 @@ def login_required(route_func):
         return route_func(*args, **kwargs)
     wrapper.__name__ = route_func.__name__
     return wrapper
-
-# @app.route("/view_submissions")
-# def view_submissions():
-#     if not session.get('admin_logged_in'):
-#         return redirect(url_for("home"))
-#     results = UserResult.query.all()
-#     return render_template("view_submissions.html", results=results)
-
-# @app.route('/logout')
-# @login_required
-# def logout():
-#     session.clear()
-#     return redirect(url_for("home"))
 
 # Strand profile page (Page 1 of user input)
 @app.route("/strandprofile", methods=["GET", "POST"])
@@ -190,7 +202,61 @@ def result():
         message = "It seems that you don't have high compatibility with IT Degree Courses. Regardless, here are some you can consider."
 
     session["recommendation"] = final_recommendation
+
+    # example when all session data is ready
+    username = session.get('username')
+    profile = session.get('profile')
+    hobbies = session.get('hobbies')
+    grade = session.get('grade')
+    personality_result = session.get('personality')
+    recommendation = session.get('final_recommendation')
+
+    # Save to database
+    new_result = UserResult(username=username, profile=str(profile), hobbies=str(hobbies), grade=str(grade), personality_result=str(personality_result), recommendation=recommendation)
+    db.session.add(new_result)
+    db.session.commit()
+
     return render_template("results.html", recommendations=final_recommendation, message=message)
+
+@app.route("/view_submissions", methods=["GET", "POST"])
+def view_submissions():
+    results = UserResult.query.all()
+    return render_template("view_submissions.html", results=results)
+
+@app.route('/download_csv')
+@login_required
+def download_csv():
+    results = UserResult.query.all()
+
+    # Create a CSV in memory
+    si = []
+    si.append(["Profile", "Hobbies", "Grades", "Personality", "Recommendation"])  # headers
+    for user in results:
+        si.append([user.profile, user.hobbies, user.grade, user.personality_result, user.recommendation])
+
+    # Convert list to CSV formatted text
+    output = ""
+    for row in si:
+        output += ",".join(f'"{item}"' for item in row) + "\n"
+
+    # Send it as file download
+    response = make_response(output)
+    response.headers["Content-Disposition"] = "attachment; filename=user_submissions.csv"
+    response.headers["Content-type"] = "text/csv"
+    return response
+
+@app.route("/delete_entry/<int:entry_id>", methods=["POST"])
+@login_required
+def delete_entry(entry_id):
+    entry = UserResult.query.get_or_404(entry_id)
+    db.session.delete(entry)
+    db.session.commit()
+    return redirect(url_for('view_submissions'))
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/')
 
 @app.route('/end_session', methods=['POST'])
 @login_required
@@ -199,8 +265,8 @@ def end_session():
     return redirect(url_for('home'))  # Redirect to the index route
 
 if __name__ == "__main__":
-    # with app.app_context():
-    #     db.create_all()
+    with app.app_context():
+        db.create_all()  # creates tables if not already created
     app.run(debug=True)
 ##############################################################################################
 
