@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template, session, request, re
 from services import hobby, grades, personality
 import numpy as np
 import os
+from collections import Counter
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "fallback_dev_key") # Required for sessions
@@ -81,9 +82,6 @@ def studentgrade():
         #     'English': request.form['English'],
         #     'NCAE': request.form['NCAE']
         # }
-        # user_input = [
-        #     user_input.request.form
-        # ]
 
         # session["grade"] = grade_input
 
@@ -128,6 +126,20 @@ def result():
     hobby_final = hobby.recommend_hobby(input1)
     grade_final = grades.recommend_grade(input2)
     person_final = personality.recommend_person(input3)
+
+    model_result = [hobby_final, grade_final, person_final]
+    count = Counter(model_result)
+    most_common_course, frequency = count.most_common(1)[0]
+
+    if frequency == 3:
+        final_recommendation = [most_common_course]
+        message = f"All models strongly agree that the best course for you is '{most_common_course}'."
+    elif frequency == 2:
+        final_recommendation = [most_common_course]
+        message = f"Two models agree that '{most_common_course}' is the best match for your profile."
+    else:
+        final_recommendation = model_result
+        message = "The models provided different recommendations based on your input. Here are the top suggestions to consider."
 
     return render_template("results.html", hobby_final=hobby_final, grade_final=grade_final, person_final=person_final)
 
