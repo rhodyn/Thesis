@@ -6,3 +6,4 @@ joblib
 gunicorn
 seaborn
 matplotlib
+Flask-SQLAlchemy

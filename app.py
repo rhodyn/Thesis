@@ -8,6 +8,11 @@ from collections import Counter
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "fallback_dev_key") # Required for sessions
 
+# # List of admin emails
+# ADMIN_EMAILS = ['rances.christianalexandra@ue.edu.ph', 'lopez.adrian1@ue.edu.ph', 'rosaldo.asiadominic@ue.edu.ph','baris.sherwin@ue.edu.ph','sipe,rasselavielrodyn@ue.edu.ph','rex.bringula@ue.edu.ph']
+# ADMIN_PASSWORD = 'admin123'
+
+
 # # Loads database and required data variables
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user_data.db' 
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -38,11 +43,19 @@ def home():
 def login():
     username = request.form["username"]
 
+    email = request.form['email']
+    password = request.form['password']
+
     if username:  # Accepts non empty values
         session["logged_in"] = True
         session["username"] = username  # Store username
         return redirect(url_for("strandprofile"))  
-    return "Username cannot be empty."
+    
+    # # Admin login check
+    # if email in ADMIN_EMAILS and password == ADMIN_PASSWORD:
+    #     session['admin_logged_in'] = True
+    #     return redirect('/view_submissions')   
+    # return "Username cannot be empty."
 
 def login_required(route_func):
     def wrapper(*args, **kwargs):
@@ -51,6 +64,19 @@ def login_required(route_func):
         return route_func(*args, **kwargs)
     wrapper.__name__ = route_func.__name__
     return wrapper
+
+# @app.route("/view_submissions")
+# def view_submissions():
+#     if not session.get('admin_logged_in'):
+#         return redirect(url_for("home"))
+#     results = UserResult.query.all()
+#     return render_template("view_submissions.html", results=results)
+
+@app.route('/logout')
+@login_required
+def logout():
+    session.clear()
+    return redirect(url_for("home"))
 
 # Strand profile page (Page 1 of user input)
 @app.route("/strandprofile", methods=["GET", "POST"])
@@ -154,10 +180,10 @@ def result():
 
     if frequency == 3:
         final_recommendation = [most_common_course]
-        message = f"Based on the Recommendation System, You are very suitable for \\n '{most_common_course}'."
+        message = f"Based on the Recommendation System, you are very suitable for '{most_common_course}'."
     elif frequency == 2:
         final_recommendation = [most_common_course]
-        message = f"Based on the Recommendation System, You have good compatibility for \\n '{most_common_course}'"
+        message = f"Based on the Recommendation System, you have good compatibility for '{most_common_course}'"
     else:
         final_recommendation = model_result
         message = "It seems that you don't have high compatibility with IT Degree Courses. Regardless, here are some you can consider."
@@ -172,6 +198,8 @@ def end_session():
     return redirect(url_for('home'))  # Redirect to the index route
 
 if __name__ == "__main__":
+    # with app.app_context():
+    #     db.create_all()
     app.run(debug=True)
 ##############################################################################################
 
