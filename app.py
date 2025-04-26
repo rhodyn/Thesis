@@ -47,7 +47,7 @@ def login():
 def login_required(route_func):
     def wrapper(*args, **kwargs):
         if not session.get("logged_in"):
-            return redirect(url_for("/"))
+            return redirect(url_for("home"))
         return route_func(*args, **kwargs)
     wrapper.__name__ = route_func.__name__
     return wrapper
