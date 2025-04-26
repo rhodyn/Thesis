@@ -19,24 +19,25 @@
     </style>
 </head>
 <body>
-    <!-- <div class="container fixed-nav">
+    <div class="container fixed-nav">
         <ul class="nav nav-tabs justify-content-center">
             <li class="nav-item">
-                <a class="nav-link text-dark" href="#">Strand</a>
+                <a class="nav-link text-light" href="#">Strand</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="#">Hobbies, Interest, and Career Aspirations</a>
+                <a class="nav-link text-light" href="#">Hobbies, Interest, and Career Aspirations</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" href="#">Grades and Exam Results</a>
+                <a class="nav-link active" href="#">Grades and Exam Results</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" href="#">Personality Test</a>
+                <a class="nav-link text-light" href="#">Personality Test</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" href="#">Submit</a>
+                <a class="nav-link text-light" href="#">Submit</a>
             </li>
-        </ul> -->
+        </ul>
+    </div>
     </div>
     <div class="main-container">
         <h2>Enter Your Grades</h2>
@@ -44,7 +45,7 @@
         <form id="gradeForm">
             <label for="Math">Mathematics:</label>
             <select id="Math" required>
-                <option value="">Select Grade</option>
+                <option value="" hidden>Select Grade</option>
                 <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
                 <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
                 <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
@@ -54,7 +55,7 @@
             
             <label for="Science">Science:</label>
             <select id="Science" required>
-                <option value="">Select Grade</option>
+                <option value="" hidden>Select Grade</option>
                 <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
                 <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
                 <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
@@ -64,7 +65,7 @@
             
             <label for="English">English:</label>
             <select id="English" required>
-                <option value="">Select Grade</option>
+                <option value="" hidden>Select Grade</option>
                 <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
                 <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
                 <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
@@ -74,7 +75,7 @@
             
             <label for="NCAE">NCAE Grade:</label>
             <select id="NCAE" required>
-                <option value="">Select Grade</option>
+                <option value="" hidden>Select Grade</option>
                 <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
                 <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
                 <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
@@ -82,7 +83,7 @@
                 <option value="Below 60-75 (DO NOT MEET EXPECTATIONS)">Below 75 (DO NOT MEET EXPECTATIONS)</option>
             </select>
             
-            <button type="button" onclick="submitGrades()">Next page</button>
+            <button type="button" onclick="submitGrades()">Next Page</button>
         </form>
     </div>
     <script>
