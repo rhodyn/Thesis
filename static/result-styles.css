@@ -26,9 +26,11 @@ h2 {
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin: 20px;
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 200px;
-    height: 250px;
+    height: 300px; 
     vertical-align: top;
 }
 
@@ -37,6 +39,8 @@ h2 {
 }
 
 .course-card button {
+    margin-top: auto;
+    align-self: center;
     padding: 10px;
     background-color: #FA2B2B;
     color: white;

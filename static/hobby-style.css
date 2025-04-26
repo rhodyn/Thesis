@@ -36,7 +36,7 @@ body{
     padding: 20px;
     background-color: black;
     border-radius: 10px;
-    opacity: 0.7;
+    opacity: 0.8;
     text-align: center;
     transition: box-shadow 0.3s;
 }
