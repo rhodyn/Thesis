@@ -147,7 +147,7 @@ def result():
 @login_required
 def end_session():
     session.clear()  # Clear all session data
-    return redirect(url_for('index'))  # Redirect to the index route
+    return redirect(url_for('home'))  # Redirect to the index route
 
 if __name__ == "__main__":
     app.run(debug=True)
