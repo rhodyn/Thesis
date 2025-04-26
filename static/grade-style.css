@@ -41,3 +41,19 @@ button {
 button:hover {
     background-color: darkred;
 }
+.nav-tabs .nav-link.active{
+    color:white;
+    background-color: #c32441;
+  }
+  .fixed-nav {
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    z-index: 1000;
+    border-radius: 5px;
+    width: 100%;
+  }
+  .nav-item{
+    padding: 1px;
+  }
