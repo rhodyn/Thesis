@@ -64,7 +64,7 @@
                 <section id="career">
                     <h2>Career Aspirations</h2>
                     <p>Looking ahead to your future, what <strong>career path</strong>, <strong>profession</strong> or <strong>field</strong> do you hope to pursue? Kindly answer in <u>3 to 5 sentences</u>.</p>
-                    <textarea name="career" placeholder="Your answer here" rows="4" required></textarea>
+                    <textarea name="career" placeholder="Your answer here" rows="4" required onsubmit="verifySentences()"></textarea>
                 </section>
                 <button type="submit">Next Page</button>
             </form>
@@ -90,6 +90,21 @@
             form.appendChild(hiddenInput);
             form.submit();
         }
+
+        function verifySentences(input) {
+            const sentencePattern = /[A-Za-z0-9][^.!?]*[.!?]/g;
+            const sentences = input.match(sentencePattern);
+
+            if (sentences && sentences.length >= 3 && sentences.length <= 5) {
+                console.log("Valid input. Number of sentences: " + sentences.length);
+            } else {
+                console.log("Invalid input. Please enter 3 to 5 sentences.");
+            }
+        }
+
+        // Sample input
+        const inputText = "This is the first sentence. This is the second. This is the third one.";
+        verifySentences(inputText);
     </script>
     <script src="../static/index-script.js"></script>
 </body>
