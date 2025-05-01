@@ -7,8 +7,7 @@ from collections import Counter
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.secret_key = 'thesis'
-# app.secret_key = os.environ.get("SECRET_KEY", "fallback_dev_key") # Required for sessions
+app.secret_key = os.environ.get("SECRET_KEY", "fallback_dev_key") # Required for sessions
 
 # Loads database and required data variables
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user_data.db' 
