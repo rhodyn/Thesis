@@ -159,7 +159,33 @@
             return selected ? selected.getAttribute('data-value') : null;
         }
 
+        function submitForm() {
+            const checkbox1 = getSelectedDivValue('checkbox1', 'strand-box');
+            const checkbox2 = getSelectedDivValue('checkbox2', 'grade');
+
+            const select1 = document.getElementById('ageSelect').value;
+            const select2 = document.getElementById('genderSelect').value;
+            const select3 = document.getElementById('incomeSelect').value;
+
+            const resultArray = [checkbox1, checkbox2, select1, select2, select3];
+
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/strandprofile";
+
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "user_data";
+            input.value = JSON.stringify(resultArray);
+
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }
+
         document.getElementById('custom-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
             const selectedStrand = selectedStrandInput.value;
             const selectedGrade = selectedGradeInput.value;
             const selectedGender = genderSelect.value;
@@ -167,32 +193,8 @@
             const selectedAge = ageSelect.value;
 
             if (selectedStrand && selectedGrade && selectedGender && selectedAge && selectedIncome) {
-                // Form will be submitted to Flask backend                
-                function submitForm() {
-                    const checkbox1 = getSelectedDivValue('checkbox1', 'strand-box');
-                    const checkbox2 = getSelectedDivValue('checkbox2', 'grade');
-
-                    const select1 = document.getElementById('ageSelect').value;
-                    const select2 = document.getElementById('genderSelect').value;
-                    const select3 = document.getElementById('incomeSelect').value;
-
-                    const resultArray = [checkbox1, checkbox2, select1, select2, select3];
-
-                    const form = document.createElement("form");
-                    form.method = "POST";
-                    form.action = "/strandprofile";
-
-                    const input = document.createElement("input");
-                    input.type = "hidden";
-                    input.name = "user_data";
-                    input.value = JSON.stringify(resultArray);
-
-                    form.appendChild(input);
-                    document.body.appendChild(form);
-                    form.submit();
-                }
+                submitForm();
             } else {
-                event.preventDefault();
                 alert('Please select a strand, a grade, a gender, a gross monthly income, and an age before submitting.');
             }
         });
