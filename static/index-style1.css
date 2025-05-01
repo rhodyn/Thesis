@@ -1,0 +1,400 @@
+/*Sets UE wallpaper as fullscreen background*/
+body{
+    background-image:url('Images/wallpaper.jpg');
+    background-attachment:fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+
+/*height and width for container size
+  margin auto centers, top and left are adjusted for ideal placement
+  border radius for rounded edges
+  */
+.login-form {
+    height: 550px;
+    width: 650px;
+    margin-top: 8%;
+    margin-bottom: auto;
+    margin-left: 50%;
+    border-radius: 25px;
+    padding: 20px;
+    background: black;
+    opacity: 0.7;
+    overflow: hidden;
+}
+
+/*input box design*/
+.user {
+    width: 80%;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 7px;
+    font-size: 20px;
+}
+
+/*submit button design*/
+.submit {
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border-radius: 7px;
+    font-size: 14px;
+    background-color: red;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+/*login and admin slider design*/
+.login-form .slide-controls {
+  position: relative;
+  display: flex;
+  height: 50px;
+  width: 70%;
+  overflow: hidden;
+  margin: 30px 0 10px 0;
+  justify-content: space-between;
+  border: 1px solid lightgrey;
+  border-radius: 15px;
+}
+
+.slide-controls .slide {
+  height: 100%;
+  width: 100%;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 48px;
+  cursor: pointer;
+  z-index: 1;
+  transition: all 0.6s ease;
+}
+
+.slide-controls label.signup {
+  color: #000;
+}
+
+.slide-controls .slider-tab {
+  position: absolute;
+  height: 100%;
+  width: 50%;
+  left: 0;
+  z-index: 0;
+  border-radius: 15px;
+  /* background: -webkit-linear-gradient(left, #f50a0a, #f72720, #f13030, #f5533d); */
+  background: red;
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+#signup:checked ~ .slider-tab {
+  left: 50%;
+}
+#signup:checked ~ label.signup {
+  color: #fff;
+  cursor: default;
+  user-select: none;
+}
+#signup:checked ~ label.login {
+  color: #000;
+}
+#login:checked ~ label.signup {
+  color: #000;
+}
+#login:checked ~ label.login {
+  cursor: default;
+  user-select: none;
+}
+
+/*===========================================================*/
+
+/*input container design*/
+.login-form .form-container {
+  width: 100%;
+  overflow: hidden;
+  padding-left: 15%;
+}
+.form-container .form-inner {
+  display: flex;
+  width: 200%;
+}
+.form-container .form-inner form {
+  width: 50%;
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/*input boxes design*/
+.form-inner form .field {
+  height: 50px;
+  width: 100%;
+  margin-top: 20px;
+}
+.form-inner form .field input {
+  height: 100%;
+  width: 80%;
+  outline: none;
+  padding-left: 15px;
+  border-radius: 15px;
+  border: 1px solid lightgrey;
+  border-bottom-width: 2px;
+  font-size: 17px;
+  transition: all 0.3s ease;
+}
+.form-inner form .field input:focus {
+  border-color: #1a75ff;
+  /* box-shadow: inset 0 0 3px #fb6aae; */
+}
+.form-inner form .field input::placeholder {
+  color: #999;
+  transition: all 0.3s ease;
+}
+form .field input:focus::placeholder {
+  color: #1a75ff;
+}
+
+form .btn {
+  height: 50px;
+  width: 60%;
+  border-radius: 15px;
+  position: relative;
+  overflow: hidden;
+}
+form .btn .btn-layer {
+  height: 100%;
+  width: 160%;
+  position: absolute;
+  left: -100%;
+  /* background: -webkit-linear-gradient(
+    right,
+    #003366,
+    #004080,
+    #0059b3,
+    #0073e6
+  ); */
+  background: red;
+  border-radius: 15px;
+  transition: all 0.4s ease;
+}
+/* form .btn:hover .btn-layer {
+  left: 0;
+} */
+form .btn input[type="submit"] {
+  height: 100%;
+  width: 60%;
+  z-index: 1;
+  position: relative;
+  background: none;
+  border: none;
+  color: #fff;
+  padding-left: 0;
+  border-radius: 15px;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* strand and demographics page*/
+.header-link {
+  position: fixed; 
+  top: 30px; 
+  left: 10px; 
+  color: #da5151; 
+  text-decoration: none;
+  font-size: 18px; 
+  z-index: 1000; 
+}
+.header-link:hover {
+  color: #da5151; 
+  text-decoration: underline; 
+  transition: color 0.3s; 
+}
+.header-link img {
+  height: 1em; 
+  vertical-align: middle; 
+  margin-right: 5px; 
+  max-height: 30px; 
+}
+.fixed-nav {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 70px); 
+  top: 70px; 
+  left: 0; 
+  background-color: #da5151;
+  width: 200px;
+  border: 1px solid #fff; 
+}
+
+.nav-item, .nav-item-active {
+  padding: 20px; 
+  flex-grow: 1; 
+  color: black; 
+  text-decoration: none; 
+  display: flex;
+  align-items: center; 
+  margin: 0; 
+  position: relative; 
+  border-bottom: 1px solid #fff; 
+  transition: background-color 0.3s; 
+}
+
+.nav-item-active {
+  color: white; 
+  background-color: #dd2929; 
+}
+
+.nav-item:hover, .nav-item-active:hover {
+  background-color: rgba(255, 255, 255, 0.2); 
+}
+
+.nav-icon {
+  height: 30px; 
+  width: auto; 
+  margin-right: 10px; 
+}
+@media (max-width: 600px) {
+  .container {
+      width: 90%;
+  }
+}
+.main-page-strand,
+.main-page-two,
+.main-page-three {
+    background: black;
+    color: white;
+    opacity: 0.7;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    align-items: center;
+    box-sizing: border-box;
+    padding: 30px;
+}
+.main-page-strand {
+  width: 25%; 
+  margin-left: 18%;
+}
+.main-page-two {
+  width: 23%;
+}
+
+.main-page-three {
+  width: 24%;
+
+  margin-right: 5%;
+}
+
+.strand-box{
+  background-color: #fff1f3;
+  color: rgb(0, 0, 0);
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  flex-grow: 1; 
+  display: flex;
+  font-size: 20px;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+  box-sizing: border-box;
+  font-weight: bold;
+}
+
+.flex-container {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: stretch; 
+  margin: 0 auto; 
+  width: 100%; 
+  gap:-1%;
+}
+.income-box{
+  background-color: #fff1f3;
+  color: rgb(0, 0, 0);
+  border-radius: 5px;
+  padding: 30px;
+  margin: 10px 0;
+  cursor: pointer;
+  padding:20px;
+  transition: background-color 0.3s;
+}
+.strand-box:hover, .grade:hover, .age-box:hover, .income-box:hover, .gender-box:hover{
+  background-color: #c32441;
+  color:white;
+  scale: 1.05;
+  transition: all 0.3s ease;
+}
+.grade{
+  background-color: #fff1f3;
+  color: rgb(0, 0, 0);
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 5px 0;
+  cursor: pointer;
+  flex-grow:1;
+  display:flex;
+  font-size: 20px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: bold;
+}
+.age-container{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:space-between;
+}
+.age-box{
+  background-color: #fff1f3;
+  color: rgb(0, 0, 0);
+  border-radius: 5px;
+  padding:10px;
+  margin: 10px 0;
+  cursor: pointer;
+  flex:1;
+  text-align:center;
+  transition: background-color 0.3s;
+  flex-grow:1;
+  display:flex;
+  font-size: 20px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: bold;
+}
+
+.grade-container{
+  display:flex;
+  flex:wrap;
+}
+.gender-box{
+  background-color: #fff1f3;
+  color: rgb(0, 0, 0);
+  border-radius: 5px;
+  padding: 30px;
+  margin: 10px 0;
+  cursor: pointer;
+  padding:20px;
+  transition: background-color 0.3s;
+}
+.selected {
+  background-color: #c32441; 
+  color: white;
+}
+.btn{
+  font-weight:bold;
+}
+.btn:hover{
+  scale: 1.06;
+  transition: all 0.5s ease;
+}
