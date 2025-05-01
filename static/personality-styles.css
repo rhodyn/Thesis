@@ -1,11 +1,10 @@
 body {
-    background-image:url('Images/form-wallpaper.jpg');
+    background-image:url('Images/wallpaper.jpg');
     background-attachment:fixed;
     background-repeat: no-repeat;
     background-size: cover;
     font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
     padding: 20px;
-    display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -14,13 +13,28 @@ body {
     background: black;
     opacity: 0.8;
     border-radius: 8px;
-    padding: 30px;
+    padding: 30px 100px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    max-width: 700px;
+    max-width: 1000px;
     width: 100%;
     text-align: center;
-    padding: 100px;
+    box-sizing: border-box;
+
+    position: absolute;
+    top: 50%;
+    left: calc(100px + 50%);
+    transform: translate(-50%, -50%);
+    min-height: 550px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+.card-inner {
+    width: 100%;
+}
+
 .slide-contain {
     margin: 20px 0;
 }
@@ -70,22 +84,70 @@ button {
 button:disabled {
     background-color: #ccc;
 }
-h2, span {
+h2, h4, span {
     color: white;
 }
-.nav-tabs .nav-link.active{
-    color:white;
-    background-color: #c32441;
+.header-link {
+    position: fixed; 
+    top: 30px; 
+    left: 10px; 
+    color: #da5151; 
+    text-decoration: none;
+    font-size: 18px; 
+    z-index: 1000; 
+  }
+  .header-link:hover {
+    color: #da5151; 
+    text-decoration: underline; 
+    transition: color 0.3s; 
+  }
+  .header-link img {
+    height: 1em; 
+    vertical-align: middle; 
+    margin-right: 5px; 
+    max-height: 30px; 
   }
   .fixed-nav {
     position: fixed;
-    top: 0; 
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 70px); 
+    top: 70px; 
     left: 0; 
-    right: 0; 
-    z-index: 1000;
-    border-radius: 5px;
-    width: 100%;
+    background-color: #da5151;
+    width: 200px;
+    border: 1px solid #fff; 
   }
-  .nav-item{
-    padding: 1px;
+  
+  .nav-item, .nav-item-active {
+    padding: 20px; 
+    flex-grow: 1; 
+    color: black; 
+    text-decoration: none; 
+    display: flex;
+    align-items: center; 
+    margin: 0; 
+    position: relative; 
+    border-bottom: 1px solid #fff; 
+    transition: background-color 0.3s; 
+  }
+  
+  .nav-item-active {
+    color: white; 
+    background-color: #dd2929; 
+  }
+  
+  .nav-item:hover, .nav-item-active:hover {
+    background-color: rgba(255, 255, 255, 0.2); 
+  }
+  
+  .nav-icon {
+    height: 30px; 
+    width: auto; 
+    margin-right: 10px; 
+  }
+  @media (max-width: 600px) {
+    .container {
+        width: 90%;
+    }
   }
