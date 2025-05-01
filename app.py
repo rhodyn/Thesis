@@ -1,8 +1,9 @@
-from flask import Flask, request, jsonify, render_template, session, request, redirect, url_for, make_response
+from flask import Flask, request, jsonify, render_template, session, request, redirect, url_for, make_response, flash
 from services import hobby, grades, personality
 import numpy as np
 import os
 import csv
+import re
 from collections import Counter
 from flask_sqlalchemy import SQLAlchemy
 
@@ -56,11 +57,12 @@ def login():
         
         elif role == "Login":
             # Admin login logic
-            if username in ADMIN_EMAILS and password == ADMIN_PASSWORD:  # Example
+            if username in ADMIN_EMAILS and password == ADMIN_PASSWORD:
                 session['admin'] = True
-                return redirect('/view_submissions')  # view database maybe
+                return redirect('/view_submissions')
             else:
-                return "Invalid admin credentials", 401
+                flash("Invalid admin credentials. Please try again.")
+                return redirect(url_for("home"))
         
         else:
             return "Unknown role", 400
@@ -70,6 +72,14 @@ def login():
 def login_required(route_func):
     def wrapper(*args, **kwargs):
         if not session.get("logged_in"):
+            return redirect(url_for("home"))
+        return route_func(*args, **kwargs)
+    wrapper.__name__ = route_func.__name__
+    return wrapper
+
+def admin_required(route_func):
+    def wrapper(*args, **kwargs):
+        if not session.get("admin"):
             return redirect(url_for("home"))
         return route_func(*args, **kwargs)
     wrapper.__name__ = route_func.__name__
@@ -180,22 +190,26 @@ def result():
     hobbies = session.get('hobbies')
     grade = session.get('grade')
     personality_result = session.get('personality')
-    recommendation = session.get('final_recommendation')
+
+    full_recommendations = session.get('recommendation', [])
+    acronyms_only = [re.search(r"\((.*?)\)", rec).group(1) if "(" in rec else rec for rec in full_recommendations]
+    recommendation = ", ".join(acronyms_only)
 
     # Save to database
-    new_result = UserResult(username=username, profile=str(profile), hobbies=str(hobbies), grade=str(grade), personality_result=str(personality_result), recommendation=recommendation)
+    new_result = UserResult(username=username, profile=str(profile), hobbies=str(hobbies), grade=str(grade), personality_result=str(personality_result), recommendation=str(recommendation))
     db.session.add(new_result)
     db.session.commit()
 
     return render_template("results.html", recommendations=final_recommendation, message=message)
 
 @app.route("/view_submissions", methods=["GET", "POST"])
+@admin_required
 def view_submissions():
     results = UserResult.query.all()
     return render_template("view_submissions.html", results=results)
 
 @app.route('/download_csv')
-@login_required
+@admin_required
 def download_csv():
     results = UserResult.query.all()
 
@@ -217,11 +231,12 @@ def download_csv():
     return response
 
 @app.route("/delete_entry/<int:entry_id>", methods=["POST"])
-@login_required
+@admin_required
 def delete_entry(entry_id):
     entry = UserResult.query.get_or_404(entry_id)
     db.session.delete(entry)
     db.session.commit()
+    flash("Entry deleted successfully.", "success")
     return redirect(url_for('view_submissions'))
 
 @app.route('/logout')
@@ -239,63 +254,3 @@ if __name__ == "__main__":
     # with app.app_context():
     #     db.create_all()  # creates tables if not already created
     app.run(debug=True)
-##############################################################################################
-
-# @app.route('/recommend_grade', methods=['GET', 'POST'])
-# def recommend_grade():
-#     if request.method == 'POST':
-#         try:
-#             # scores = request.form.get('scores_course') or request.json.get('scores')
-#             # scores = [float(x.strip()) for x in scores.split(',')]
-#             # result = course.predict({"scores": scores})
-#             # return jsonify(result) if request.is_json else render_template('result.html', result=f"Recommended Course: {result['recommended_course']}")
-
-#             user_input = {
-#                 'Math': request.form['Math'],
-#                 'English': request.form['English'],
-#                 'Science': request.form['Science'],
-#                 'NCAE': request.form['NCAE'],
-#             }
-
-#             recommendation = recommend_grade(user_input)
-#         except Exception as e:
-#             return str(e), 400
-#     return render_template('recommend_course.html', recommendation=recommendation)
-
-# @app.route('/recommend_person', methods=['GET', 'POST'])
-# def recommend_person():
-#     if request.method == 'POST':
-#         try:
-#             # scores = request.form.get('scores_grade') or request.json.get('scores')
-#             # scores = [float(x.strip()) for x in scores.split(',')]
-#             # result = grades.predict({"scores": scores})
-#             # return jsonify(result) if request.is_json else render_template('result.html', result=f"Predicted Grade: {result['predicted_grade']}")
-
-#             user_input = {
-#                 'Extraversion': float(request.form['E']),
-#                 'Agreeableness': float(request.form['A']),
-#                 'Conscientiousness': float(request.form['C']),
-#                 'Neuroticism': float(request.form['N']),
-#                 'Openness': float(request.form['O'])
-#             }
-
-#             recommendation = recommend_person(user_input)
-#         except Exception as e:
-#             return str(e), 400
-#     return render_template('predict_grade.html', recommendation=recommendation)
-
-# @app.route('/recommend_hobby', methods=['GET', 'POST'])
-# def recommend_hobby():
-#     if request.method == 'POST':
-#         try:
-#             # scores = request.form.get('scores_interest') or request.json.get('scores')
-#             # scores = [float(x.strip()) for x in scores.split(',')]
-#             # result = interests.predict({"scores": scores})
-#             # return jsonify(result) if request.is_json else render_template('result.html', result=f"Interest Category: {result['interest_category']}")
-
-#             user_text = request.form.get("student_input", "")
-#             recommendation = recommend_hobby(user_text)
-
-#         except Exception as e:
-#             return str(e), 400
-#     return render_template('recommend_result.html',recommendation=recommendation)
