@@ -39,22 +39,6 @@ def home():
 # Validates username input on index before moving to next page
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    # username = request.form["username"]
-
-    # email = request.form['email']
-    # password = request.form['password']
-
-    # if username:  # Accepts non empty values
-    #     session["logged_in"] = True
-    #     session["username"] = username  # Store username
-    #     return redirect(url_for("strandprofile"))
-    
-    
-    # # Admin login check
-    # if email in ADMIN_EMAILS and password == ADMIN_PASSWORD:
-    #     session['admin_logged_in'] = True
-    #     return redirect('/view_submissions')
-
     # List of admin emails
     ADMIN_EMAILS = ['rances.christianalexandra@ue.edu.ph', 'lopez.adrian1@ue.edu.ph', 'rosaldo.asiadominic@ue.edu.ph','baris.sherwin@ue.edu.ph','sipe.rasselavielrodyn@ue.edu.ph','rex.bringula@ue.edu.ph']
     ADMIN_PASSWORD = 'admin123'
@@ -141,15 +125,6 @@ def hobbies():
 def studentgrade():
     if request.method == "POST":
         import json
-        # grade_input = {
-        #     'Math': request.form['Math'],
-        #     'Science': request.form['Science'],
-        #     'English': request.form['English'],
-        #     'NCAE': request.form['NCAE']
-        # }
-
-        # session["grade"] = grade_input
-
         grades_json = request.form.get("grades")
         if grades_json:
             grade_array = json.loads(grades_json)
@@ -162,15 +137,6 @@ def studentgrade():
 @login_required
 def personality_test():
     if request.method == "POST":
-        # user_input = {
-        #     'Extraversion': float(request.form['E']),
-        #     'Agreeableness': float(request.form['A']),
-        #     'Conscientiousness': float(request.form['C']),
-        #     'Neuroticism': float(request.form['N']),
-        #     'Openness': float(request.form['O'])
-        # }
-        # session["personality"] = user_input
-
         scores = request.form.get("bfi_scores")
         if scores:
             score_array = eval(scores)  # Turn string into list
