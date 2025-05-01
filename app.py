@@ -7,7 +7,8 @@ from collections import Counter
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY", "fallback_dev_key") # Required for sessions
+app.secret_key = 'thesis'
+# app.secret_key = os.environ.get("SECRET_KEY", "fallback_dev_key") # Required for sessions
 
 # Loads database and required data variables
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user_data.db' 
@@ -97,11 +98,16 @@ def login_required(route_func):
 def strandprofile():
     if request.method == "POST":
         import json
-        json_input = request.form.get("student_input_array", "[]")
-        inputs = json.loads(json_input)
-        session["profile"] = inputs # Store in session for later use
-        return redirect(url_for("hobbies"))
-    return render_template("strandprofile.html")
+        user_data = request.form.get('user_data')
+        print("Raw user_data:", user_data)
+        if user_data:
+            try:
+                data_array = json.loads(user_data)  # Convert JSON string to list
+                session['profile'] = data_array   # Save to session
+            except json.JSONDecodeError:
+                return "Invalid data format received", 400
+        return redirect(url_for('hobbies'))
+    return render_template("strandprofile1.html")
 
 # Hobbies page (Page 2 of user input)
 @app.route("/hobbies", methods=["GET", "POST"])
@@ -265,8 +271,8 @@ def end_session():
     return redirect(url_for('home'))  # Redirect to the index route
 
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()  # creates tables if not already created
+    # with app.app_context():
+    #     db.create_all()  # creates tables if not already created
     app.run(debug=True)
 ##############################################################################################
 
