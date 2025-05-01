@@ -10,7 +10,6 @@
     <style>
         body {
             animation: fadeIn 1s ease-in-out;
-            color: white;
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -19,33 +18,38 @@
     </style>
 </head>
 <body>
-    <div class="container fixed-nav">
-        <ul class="nav nav-tabs justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link text-light" href="#">Strand</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-light" href="#">Hobbies, Interest, and Career Aspirations</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Grades and Exam Results</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-light" href="#">Personality Test</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-light" href="#">Submit</a>
-            </li>
-        </ul>
+    <div>
+        <a href="/logout" class="header-link">
+        <img src="../static/Images/arrow-home.png"><i>Home</i></a>
     </div>
-    </div>
+        <div class="fixed-nav">
+            <a href="/strandprofile" class="nav-item">
+                <img src="../static/Images/profile-na.PNG" class="nav-icon" alt="Profile Icon"> Profiling
+            </a>
+            <a href="/hobbies" class="nav-item">
+                <img src="../static/Images/hobbies-na.png" class="nav-icon" alt="Hobbies Icon"> Hobbies, Interest, and Career Aspirations
+            </a>
+            <a href="#" class="nav-item-active">
+                <img src="../static/Images/grades-active.PNG" class="nav-icon" alt="Grades Icon"> Grades & Exam Results
+            </a>
+            <a class="nav-item">
+                <img src="../static/Images/personality-na.png" class="nav-icon" alt="Personality Test Icon"> Personality Test
+            </a>
+            <a class="nav-item">
+                <img src="../static/Images/results-na.png" class="nav-icon" alt="Results Icon"> Results
+            </a>
+        </div>
+        
+        <div style="margin-left: 250px; padding: 50px;">
+            <h1>Grades and Exam Results</h1>
+        </div>
     <div class="main-container">
         <h2>Enter Your Grades</h2>
         
         <form id="gradeForm">
             <label for="Math">Mathematics:</label>
             <select id="Math" required>
-                <!-- <option value="" hidden>Select Grade</option> -->
+                <option value="" hidden>Select Grade</option>
                 <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
                 <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
                 <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
@@ -55,7 +59,7 @@
             
             <label for="Science">Science:</label>
             <select id="Science" required>
-                <!-- <option value="" hidden>Select Grade</option> -->
+                <option value="" hidden>Select Grade</option>
                 <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
                 <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
                 <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
@@ -65,7 +69,7 @@
             
             <label for="English">English:</label>
             <select id="English" required>
-                <!-- <option value="" hidden>Select Grade</option> -->
+                <option value="" hidden>Select Grade</option>
                 <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
                 <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
                 <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
@@ -75,7 +79,7 @@
             
             <label for="NCAE">NCAE Grade:</label>
             <select id="NCAE" required>
-                <!-- <option value="" hidden>Select Grade</option> -->
+                <option value="" hidden>Select Grade</option>
                 <option value="90-100 (OUTSTANDING)">90-100 (OUTSTANDING)</option>
                 <option value="85-89 (VERY SATISFACTORY)">85-89 (VERY SATISFACTORY)</option>
                 <option value="80-84 (SATISFACTORY)">80-84 (SATISFACTORY)</option>
@@ -113,29 +117,6 @@
             document.body.appendChild(form);
             form.submit();
         }
-    </script>
-    <!-- <script>
-        function sendGrades(event) {
-            event.preventDefault();
-            const form = document.getElementById("gradeForm");
-            const formData = new FormData(form);
-        
-            const submitForm = document.createElement("form");
-            submitForm.method = "POST";
-            submitForm.action = "/studentgrade"; // Flask endpoint
-        
-            ["Math", "Science", "English", "NCAE"].forEach(subject => {
-                const input = document.createElement("input");
-                input.type = "hidden";
-                input.name = subject;
-                input.value = formData.get(subject);
-                submitForm.appendChild(input);
-            });
-        
-            document.body.appendChild(submitForm);
-            submitForm.submit();
-        }
-    </script> -->
-        
+    </script>  
 </body>
 </html>

@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="../static/index-style.css">
 </head>
 <body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <script>
+        alert("{{ messages[0] }}");
+        </script>
+    {% endif %}
+    {% endwith %}
+
     <!--container for login-->
     <div class="login-form">
         <div class="form-container">

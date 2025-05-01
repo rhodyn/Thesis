@@ -3,38 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Course Recommendation</title>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../static/result-styles.css" rel="stylesheet">
 </head>
 <body>
-    <!-- <div class="container fixed-nav">
-        <ul class="nav nav-tabs justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link text-light" href="#">Strand</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-light" href="#">Hobbies, Interest, and Career Aspirations</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-light" href="#">Grades and Exam Results</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-light" href="#">Personality Test</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Submit</a>
-            </li>
-        </ul>
-    </div> -->
+    <div>
+        <a class="header-link">
+            <img src="../static/Images/arrow-home.png"><i>Home</i></a>
+        </div>
+            <div class="fixed-nav">
+                <a class="nav-item">
+                    <img src="../static/Images/profile-na.PNG" class="nav-icon" alt="Profile Icon"> Profiling
+                </a>
+                <a class="nav-item">
+                    <img src="../static/Images/hobbies-na.png" class="nav-icon" alt="Hobbies Icon"> Hobbies, Interest, and Career Aspirations
+                </a>
+                <a class="nav-item">
+                    <img src="../static/Images/grades-na.png" class="nav-icon" alt="Grades Icon"> Grades & Exam Results
+                </a>
+                <a class="nav-item">
+                    <img src="../static/Images/personality-na.png" class="nav-icon" alt="Personality Test Icon"> Personality Test
+                </a>
+                <a href="#" class="nav-item-active">
+                    <img src="../static/Images/results-active.jpg" class="nav-icon" alt="Results Icon"> Results
+                </a>
+            </div>
+        
+        <div style="margin-left: 250px; padding: 50px;">
+            <h1>Recommendation Result</h1>
+        </div>
     <div class="content">
         <h2>{{ message }}</h2>
 
-        {% for course in recommendations %}
-        <div class="course-card">
-            <h3>{{ course }}</h3>
-            <button onclick="openModal('{{ course }}')">Learn More</button>
+        <div class="course-container">
+            {% for course in recommendations %}
+            <div class="course-card">
+                <h3>{{ course }}</h3>
+                <button onclick="openModal('{{ course }}')">Learn More</button>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+        
         <div style="margin-top: 40px; display: flex; justify-content: center; align-items: center;">
             <form action="/end_session" method="POST">
                 <button type="submit" style="

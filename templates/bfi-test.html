@@ -9,7 +9,6 @@
     <style>
         body {
               animation: fadeIn 1s ease-in-out;
-              color: white;
           }
           @keyframes fadeIn {
               from { opacity: 0; }
@@ -18,45 +17,51 @@
     </style>
 </head>
 <body>
-    <div class="container fixed-nav">
-        <ul class="nav nav-tabs justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link text-light" href="#">Strand</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-light" href="#">Hobbies, Interest, and Career Aspirations</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-light" href="#">Grades and Exam Results</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Personality Test</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-light" href="#">Submit</a>
-            </li>
-        </ul>
+    <div>
+        <a href="/logout" class="header-link">
+        <img src="../static/Images/arrow-home.png"><i>Home</i></a>
     </div>
-    <div class="card-contain">
-        <h2>Personality Type Test</h2>
-        <h4 id="question-number"></h4>
-        <h2 id="question-text"></h2>
-        <div class="slide-contain">
-            <input type="range" min="1" max="5" id="question-range" value="3">
-            <div class="slider-labels-style">
-                <span>Strongly Disagree</span>
-                <span>Disagree</span>
-                <span>Neutral</span>
-                <span>Agree</span>
-                <span>Strongly Agree</span>
+        <div class="fixed-nav">
+            <a href="/studentprofile" class="nav-item">
+                <img src="../static/Images/profile-na.PNG" class="nav-icon" alt="Profile Icon"> Profiling
+            </a>
+            <a href="/hobbies" class="nav-item">
+                <img src="../static/Images/hobbies-na.png" class="nav-icon" alt="Hobbies Icon"> Hobbies, Interest, and Career Aspirations
+            </a>
+            <a href="/studentgrade" class="nav-item">
+                <img src="../static/Images/grades-na.png" class="nav-icon" alt="Grades Icon"> Grades & Exam Results
+            </a>
+            <a href="#" class="nav-item-active">
+                <img src="../static/Images/personality-active.PNG" class="nav-icon" alt="Personality Test Icon"> Personality Test
+            </a>
+            <a class="nav-item">
+                <img src="../static/Images/results-na.png" class="nav-icon" alt="Results Icon"> Results
+            </a>
+        </div>
+        <div style="margin-left: 250px; padding: 50px;">
+            <h1>Personality Test</h1>
+        </div>
+        <div class="card-contain">
+            <div class="card-inner">
+              <h4 id="question-number"></h4>
+              <h2 id="question-text"></h2>
+              <div class="slide-contain">
+                <input type="range" min="1" max="5" id="question-range" value="3">
+                <div class="slider-labels-style">
+                  <span>Strongly Disagree</span>
+                  <span>Disagree</span>
+                  <span>Neutral</span>
+                  <span>Agree</span>
+                  <span>Strongly Agree</span>
+                </div>
+              </div>
+              <div class="navigation-buttons">
+                <button id="back-btn" onclick="previousQuestion()">Back</button>
+                <button id="next-btn" onclick="nextQuestion()">Next</button>
+              </div>
             </div>
-        </div>
-
-        <div class="navigation-buttons">
-            <button id="back-btn" onclick="previousQuestion()">Back</button>
-            <button id="next-btn" onclick="nextQuestion()">Next</button>
-        </div>
-    </div>
+          </div>
+          
 
     <script>
         const questions = [
@@ -157,6 +162,8 @@
                     if (reversed.includes(q)) val = 6 - val;
                     scores[trait] += val;
                 });
+                // Normalize to 1-5 range (average score per trait)
+                scores[trait] = parseFloat((scores[trait] / traits[trait].length).toFixed(5));
             }
 
             const resultArray = [scores.O, scores.C, scores.E, scores.A, scores.N];
@@ -174,7 +181,6 @@
             document.body.appendChild(form);
             form.submit();
         }
-
         // Loads first question
         updateQuestion();
     </script>

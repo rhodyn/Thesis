@@ -6,6 +6,16 @@
     <link rel="stylesheet" href="../static/database-style.css">
 </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul class="flashes">
+        {% for category, message in messages %}
+            <li class="flash-{{ category }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+
     <h1>Saved User Submissions</h1>
     <div class="button-container">
         <a href="{{ url_for('download_csv') }}" class="btn-download">Download CSV</a>
@@ -42,5 +52,16 @@
     </table>
     <a href="/logout" class="logout-btn">Back to Home</a>
 
+    <script>
+        setTimeout(function() {
+            const flashMessages = document.querySelectorAll('.flashes li');
+            flashMessages.forEach(msg => {
+                msg.style.transition = 'opacity 0.5s ease-out';
+                msg.style.opacity = '0';
+                setTimeout(() => msg.style.display = 'none', 500); // remove after fade
+            });
+        }, 3000);
+    </script>
+    
 </body>
 </html>
