@@ -33,8 +33,10 @@
             <h1>Recommendation Result</h1>
         </div>
     <div class="content">
-        <h2>{{ message }}</h2>
-
+        <div class="message-container">
+            <h2>{{ message }}</h2>
+        </div>
+        
         <div class="course-container">
             {% for course in recommendations %}
             <div class="course-card">
@@ -46,7 +48,7 @@
         
         <div style="margin-top: 40px; display: flex; justify-content: center; align-items: center;">
             <form action="/end_session" method="POST">
-                <button type="submit" style="
+                <button id="backToHomeBtn" type="submit" onclick="openFeedbackModal(event)" style="
                     padding: 12px 24px;
                     font-size: 16px;
                     background-color: #FA2B2B;
@@ -64,8 +66,11 @@
     <!-- Modal -->
     <div id="courseModal" class="modal" onclick="closeModal(event)">
         <div class="modal-content" id="modalContent">
+            <!-- Context message that will explain X and Y -->
+            <p id="context-description" style="font-weight: bold;"></p>
+            
             <p id="course-description"></p>
-        
+    
             <div>
                 <strong>Possible Careers:</strong>
                 <ul class="career-list" id="career-options"></ul>
@@ -73,6 +78,32 @@
         </div>
     </div>
     
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="modal-feedback" style="display: none;">
+        <div class="modal-feedback-content">    
+            <h3>Did the system's recommendation affect your choices of degree programs?</h3>
+            <div style="margin-top: 20px;">
+                <!-- <form id="feedbackForm" action="{{ url_for('submit_feedback') }}" method="POST">
+                    <label>
+                        <input id="feedbackYes" type="radio" name="feedback" value="True" onclick="submitFeedback(true)" required> Yes
+                    </label>
+                    <label>
+                        <input id="feedbackNo" type="radio" name="feedback" value="False" onclick="submitFeedback(false)" required> No
+                    </label>
+                    <button type="submit">Submit Feedback</button>
+                </form> -->
+                <form method="POST" action="{{ url_for('submit_feedback') }}">
+                    <input type="hidden" name="feedback" value="true">
+                    <button type="submit">Useful</button>
+                </form>
+                
+                <form method="POST" action="{{ url_for('submit_feedback') }}">
+                    <input type="hidden" name="feedback" value="false">
+                    <button type="submit">Not Useful</button>
+                </form>                
+            </div>
+        </div>
+    </div>
 
     <script>
         const courseDescriptions = {
@@ -96,18 +127,29 @@
                 description: "The BSDS program includes the study of data and the methodologies, processes, algorithms, and systems for collecting, refining, storing, and analyzing data to arrive at useful insights and knowledge. Data Science is a discipline in computing that benefits from developments in computer science, mathematics, statistics, business, and other disciplines.",
                 careers: ["Data Scientist ", "Data Analyst", "Machine Learning Engineer"]
             },
-        
         };
+
+        const courseSources = {{ course_sources | tojson }};
 
         function openModal(courseName) {
             const modal = document.getElementById("courseModal");
             const descriptionElement = document.getElementById("course-description");
             const careersElement = document.getElementById("career-options");
+            const contextElement = document.getElementById("context-description");
 
             const courseInfo = courseDescriptions[courseName];
+            const modelNames = courseSources[courseName];
 
+            // Construct the sentence for X and Y
+            const x = "Hobbies";  // You should replace this with the actual logic to get the model
+            const y = courseName; // Here, the recommended course is the one being clicked
+
+            // const contextMessage = `Based on the system's analysis, your ${x} results are quite similar with current students that belong to ${y} course.`;
+            const contextMessage = `Based on the system's analysis, your ${modelNames.join(", ")} results are quite similar with current students that belong to ${y} course.`;
+
+            contextElement.innerText = contextMessage;
             descriptionElement.innerText = courseInfo.description;
-            
+
             // Clear previous careers
             careersElement.innerHTML = "";
 
@@ -127,6 +169,39 @@
                 modal.classList.remove("show");
             }
         }
+
+        function openFeedbackModal(event) {
+            event.preventDefault(); // Prevent immediate navigation
+            const modal = document.getElementById("feedbackModal")
+            modal.classList.add("show");
+            modal.style.display = "flex";  // Correctly show modal
+        }
+
+        function submitFeedback(value) {
+            document.getElementById('feedbackInput').value = value;
+            document.getElementById("feedbackForm").submit(); 
+        }
+         
+        document.getElementById("backToHomeBtn").addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent default behavior
+            document.getElementById("feedbackModal");
+        });
+
+        // Redirect to /end_session instead of index
+        document.getElementById("feedbackYes").addEventListener("click", function() {
+            submitFeedback(true);  // Submit form with feedback "Yes"
+        });
+
+        document.getElementById("feedbackNo").addEventListener("click", function() {
+            submitFeedback(false);  // Submit form with feedback "No
+        });
+
+        window.onclick = function(event) {
+            const modal = document.getElementById("feedbackModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
     </script>
 </body>
 </html>
