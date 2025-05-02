@@ -23,14 +23,16 @@ class UserResult(db.Model):
     grade = db.Column(db.String(1000))
     personality_result = db.Column(db.String(100))
     recommendation = db.Column(db.String(500))
+    feedback = db.Column(db.Integer)  # 1 for True/Yes, 0 for False/No
 
-    def __init__(self, username, profile, hobbies, grade, personality_result, recommendation):
+    def __init__(self, username, profile, hobbies, grade, personality_result, recommendation, feedback):
         self.username = username
         self.profile = profile
         self.hobbies = hobbies
         self.grade = grade
         self.personality_result = personality_result
         self.recommendation = recommendation
+        self.feedback = feedback
 
 # Loads index page
 @app.route('/')
@@ -163,10 +165,36 @@ def result():
     input2 = session.get("grade", [])
     input3 = session.get("personality", [])
 
+    feedback_text = request.form.get("feedback")
+    session["feedback"] = feedback_text
+
     # Model prediction with collected user input
     hobby_final = hobby.recommend_hobby(input1)
     grade_final = grades.recommend_grade(input2)
     person_final = personality.recommend_person(input3)
+
+    model_predictions = {
+        "Hobbies": hobby_final,
+        "Grades": grade_final,
+        "Personality Type": person_final
+    }
+
+    # Map the model name to their output
+    course_to_models = {}
+    if hobby_final in course_to_models:
+        course_to_models[hobby_final].append("Hobbies")
+    else:
+        course_to_models[hobby_final] = ["Hobbies"]
+
+    if grade_final in course_to_models:
+        course_to_models[grade_final].append("Grades")
+    else:
+        course_to_models[grade_final] = ["Grades"]
+
+    if person_final in course_to_models:
+        course_to_models[person_final].append("Personality Type")
+    else:
+        course_to_models[person_final] = ["Personality Type"]
 
     model_result = [hobby_final, grade_final, person_final]
     count = Counter(model_result)
@@ -174,13 +202,13 @@ def result():
 
     if frequency == 3:
         final_recommendation = [most_common_course]
-        message = f"Based on the Recommendation System, you are very suitable for '{most_common_course}'."
+        message = f"Based on the Recommendation System, you are very suitable for '{most_common_course}'. More details can be found in \"Learn More \"."
     elif frequency == 2:
         final_recommendation = [most_common_course]
-        message = f"Based on the Recommendation System, you have good compatibility for '{most_common_course}'"
+        message = f"Based on the Recommendation System, you have good compatibility for '{most_common_course}'. More details can be found in \"Learn More \"."
     else:
         final_recommendation = model_result
-        message = "It seems that you don't have high compatibility with IT Degree Courses. Regardless, here are some you can consider."
+        message = "It seems that you don't have high compatibility with a certain IT Degree Course. Regardless, here are some you can consider. More details can be found in \"Learn More \"."
 
     session["recommendation"] = final_recommendation
 
@@ -196,15 +224,48 @@ def result():
     recommendation = ", ".join(acronyms_only)
 
     # Save to database
-    new_result = UserResult(username=username, profile=str(profile), hobbies=str(hobbies), grade=str(grade), personality_result=str(personality_result), recommendation=str(recommendation))
+    new_result = UserResult(username=username, profile=str(profile), hobbies=str(hobbies), grade=str(grade), personality_result=str(personality_result), recommendation=str(recommendation), feedback=None )
     db.session.add(new_result)
     db.session.commit()
 
-    return render_template("results.html", recommendations=final_recommendation, message=message)
+    session['last_result_id'] = new_result.id
+
+    return render_template("results.html", recommendations=final_recommendation, message=message, course_sources=course_to_models)
+
+@app.route('/submit_feedback', methods=['POST'])
+@login_required
+def submit_feedback():
+    feedback_raw = request.form.get('feedback', 'false')
+    feedback_clean = feedback_raw.strip().lower()
+
+    print(f"RAW feedback from form: {repr(feedback_raw)} (type: {type(feedback_raw)})")
+    print(f"Cleaned feedback: {feedback_clean}")
+
+    feedback_value = 1 if feedback_raw == 'true' else 0
+
+    result_id = session.get('last_result_id')
+    print(f"Result ID: {result_id}")
+
+    if result_id is None:
+        flash("Unable to identify which result to update feedback for.", "error")
+        return redirect(url_for("view_submissions"))
+
+    user_entry = UserResult.query.get(result_id)
+    if user_entry:
+        print(f"Before update: feedback={user_entry.feedback}")
+        user_entry.feedback = feedback_value
+        db.session.commit()
+        print(f"After update: feedback={user_entry.feedback}")
+        flash("Feedback submitted successfully!", "success")
+    else:
+        flash("Result not found.", "error")
+
+    return redirect(url_for("view_submissions"))
 
 @app.route("/view_submissions", methods=["GET", "POST"])
 @admin_required
 def view_submissions():
+    db.session.expire_all()  # Force SQLAlchemy to reload from DB
     results = UserResult.query.all()
     return render_template("view_submissions.html", results=results)
 
@@ -250,7 +311,24 @@ def end_session():
     session.clear()  # Clear all session data
     return redirect(url_for('home'))  # Redirect to the index route
 
+@app.route("/debug_feedback")
+def debug_feedback():
+    all_results = UserResult.query.all()
+    return "<br>".join([f"ID {r.id} → {r.feedback} ({type(r.feedback)})" for r in all_results])
+
 if __name__ == "__main__":
     # with app.app_context():
-    #     db.create_all()  # creates tables if not already created
+    # # Check if 'feedback' column exists and convert boolean to integer if necessary
+    #     from sqlalchemy import text
+
+    #     # Optional: Print existing data types
+    #     result = db.session.execute(text("PRAGMA table_info(user_result);"))
+    #     print("Table schema for user_result:")
+    #     for row in result.fetchall():
+    #         print(row)
+
+    #     # Manually update all existing True/False feedback values to 1/0
+    #     db.session.execute(text("UPDATE user_result SET feedback = 1 WHERE feedback = 'True'"))
+    #     db.session.execute(text("UPDATE user_result SET feedback = 0 WHERE feedback = 'False'"))
+    #     db.session.commit()
     app.run(debug=True)
