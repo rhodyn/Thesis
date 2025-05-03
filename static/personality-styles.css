@@ -66,20 +66,20 @@ body {
 .slider-labels-style span:nth-child(5) { left: 100%; text-align: right; }
 
 .navigation-buttons {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 60px;
+  margin-top: 60px; /* Increased spacing from the slider */
+  display: flex;
+  justify-content: center;
+  gap: 80px; /* Slightly more space between buttons */
 }
 button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: red;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
+  padding: 15px 30px; /* Make buttons larger */
+  font-size: 16px;     /* Bigger text */
+  border-radius: 10px; /* More rounded */
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
 }
 button:disabled {
     background-color: #ccc;

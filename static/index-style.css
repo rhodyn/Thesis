@@ -101,10 +101,10 @@ input[type="radio"] {
   user-select: none;
 }
 #signup:checked ~ label.login {
-  color: #000;
+  color: #fff;
 }
 #login:checked ~ label.signup {
-  color: #000;
+  color: #fff;
 }
 #login:checked ~ label.login {
   cursor: default;
@@ -173,7 +173,7 @@ form .btn .btn-layer {
   transition: all 0.4s ease;
 }
 
-form .btn input[type="submit"] {
+form .btn input[type="submit"]{
   height: 100%;
   width: 60%;
   z-index: 1;
@@ -191,3 +191,57 @@ form .btn input[type="submit"] {
 form .btn input[type="submit"]:hover {
   background-color: darkred;
 }
+
+/*===========================================================*/
+
+/* Modal styles */
+.modal {
+  display: none; /* Hides it initially */
+  position: fixed;
+  z-index: 999; /* Make sure it's above everything */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  color: black;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+}
+
+.modal-header {
+  text-align: center;
+}
+
+.modal-body {
+  text-align: left;
+  max-height: 65vh;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.modal-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
