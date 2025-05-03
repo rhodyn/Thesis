@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Home Page</title>
     <!--css link-->
     <link rel="stylesheet" href="../static/index-style.css">
 </head>
@@ -37,12 +37,12 @@
         <div class="form-container">
             <div class="form-inner">
                 <!--user login page-->
-                <form action="/login" class="login" method="POST">
-                <h4 style="color: white; text-align: left;">Name ( LastName, FirstName | Nickname )</h4>
+                <form action="/login" class="login" method="POST" id="userLoginForm">
+                <!-- <h4 style="color: white; text-align: left;">Name ( LastName, FirstName | Nickname )</h4>
                 <div class="field">
                     <input type="text" name="username" placeholder="" required>
-                </div>
-                <div style="padding-left: 15%; margin-top: 8%;">
+                </div> -->
+                <div style="padding-left: 11%; margin-top: 15%;">
                     <div class="field btn">
                         <div class="btn-layer"></div>
                         <input type="submit" name="role" value="Continue">
@@ -67,9 +67,88 @@
             </div>
         </div>
     </div>
-    <script>
 
-    </script>
+    <!-- Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h2>Data Privacy Notice</h2>
+            </div>
+            <div class="modal-body">
+              <!-- All your <p> content -->
+                <p>This Privacy Notice explains how the Recommendation System collects, uses, and discloses your personal information.</p>
+                <p style="font-weight: bold;">1. Information We Collect</p>
+                <p>a. Student Profile: Our system will ask you to input certain personal information such as Skills, Hobbies, Interests, as well as profiling information like SHS Strand, Year Level, Age, Gender, and Monthly Household Income.</p>
+                <p>b. Subject Grades: Our system will ask you to input certain subject grades.</p>
+                <p>c. Personality Test: Our system will ask you to answer a 44 question Personality Test for better degree recommendation.</p>
+                <p style="font-weight: bold;">2. Use of Information</p>
+                <p>The information we collect is for our recommendation system to assess and provide recommendation if you are suited to a degree program that is within the Information Technology (IT) field. Certain information such as SHS Strand, Year Level, Age, Gender, and Monthly Household Income are collected for profiling.</p>
+                <p style="font-weight: bold;">3. Confidentiality and Data Security</p>
+                <p>All collected data will be treated with utmost confidentiality. We take reasonable measures to protect your personal information from unauthorized access, use, or disclosure. All data will only be accessible to authorized research members and is protected with proper storage protocols.</p>
+                <p style="font-weight: bold;">4. Non-Disclosure</p>
+                <p>The research members involved in this study are commited to not disclose any information collected to third parties. The collected data will be used only for the intended purpose of this research.</p>
+                <p style="font-weight: bold;">5. Contact Us</p>
+                <p>If you have any questions about this Privacy Policy, please contact any of the research members through their UE Email:</p>
+                <p>baris.sherwin@ue.edu.ph</p>
+                <p>lopez.adrian1@ue.edu.ph</p>
+                <p>rances.christianalexandra@ue.edu.ph</p>
+                <p>rosaldo.asiadominic@ue.edu.ph</p>
+                <p>sipe.rasselavielrodyn@ue.edu.ph</p>
+                <p style="font-weight: bold;">
+                    By continuing, you consent to the collection and use of your information
+                    for educational and research purposes in accordance with our data privacy policy.
+                </p>
+            </div>
+            <div class="modal-footer">
+              <button id="acceptBtn" name="role" value="Continue">I Agree</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const form = document.getElementById('userLoginForm');
+        const modal = document.getElementById('privacyModal');
+        const acceptBtn = document.getElementById('acceptBtn');
+    
+        let privacyAccepted = false;
+        let clickedButton = null;
+    
+        // Capture the clicked submit button (User side)
+        document.querySelectorAll('input[type="submit"]').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                clickedButton = this;
+            });
+        });
+    
+        form.addEventListener('submit', function (event) {
+            if (!privacyAccepted) {
+                event.preventDefault(); // Stop form from submitting
+                modal.style.display = 'flex';
+            }
+        });
+    
+        acceptBtn.addEventListener('click', function () {
+            privacyAccepted = true;
+    
+            if (clickedButton) {
+                // Create and submit a new form submission with the right "role"
+                const hiddenInput = document.createElement("input");
+                hiddenInput.type = "hidden";
+                hiddenInput.name = "role";
+                hiddenInput.value = clickedButton.value;
+                form.appendChild(hiddenInput);
+    
+                form.submit();
+            }
+        });
+    
+        // Optional: Click outside modal to close it
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>          
     <script src="../static/index-script.js"></script>
 </body>
 </html>

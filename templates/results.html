@@ -83,15 +83,6 @@
         <div class="modal-feedback-content">    
             <h3>Did the system's recommendation affect your choices of degree programs?</h3>
             <div style="margin-top: 20px;">
-                <!-- <form id="feedbackForm" action="{{ url_for('submit_feedback') }}" method="POST">
-                    <label>
-                        <input id="feedbackYes" type="radio" name="feedback" value="True" onclick="submitFeedback(true)" required> Yes
-                    </label>
-                    <label>
-                        <input id="feedbackNo" type="radio" name="feedback" value="False" onclick="submitFeedback(false)" required> No
-                    </label>
-                    <button type="submit">Submit Feedback</button>
-                </form> -->
                 <form method="POST" action="{{ url_for('submit_feedback') }}">
                     <input type="hidden" name="feedback" value="true">
                     <button type="submit">Useful</button>
@@ -140,9 +131,8 @@
             const courseInfo = courseDescriptions[courseName];
             const modelNames = courseSources[courseName];
 
-            // Construct the sentence for X and Y
-            const x = "Hobbies";  // You should replace this with the actual logic to get the model
-            const y = courseName; // Here, the recommended course is the one being clicked
+            const x = "Hobbies";  
+            const y = courseName; 
 
             // const contextMessage = `Based on the system's analysis, your ${x} results are quite similar with current students that belong to ${y} course.`;
             const contextMessage = `Based on the system's analysis, your ${modelNames.join(", ")} results are quite similar with current students that belong to ${y} course.`;
