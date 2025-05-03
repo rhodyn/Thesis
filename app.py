@@ -276,9 +276,9 @@ def download_csv():
 
     # Create a CSV in memory
     si = []
-    si.append(["Profile", "Hobbies", "Grades", "Personality", "Recommendation"])  # headers
+    si.append(["Profile", "Hobbies", "Grades", "Personality", "Recommendation","Feedback"])  # headers
     for user in results:
-        si.append([user.profile, user.hobbies, user.grade, user.personality_result, user.recommendation])
+        si.append([user.profile, user.hobbies, user.grade, user.personality_result, user.recommendation, user.feedback])
 
     # Convert list to CSV formatted text
     output = ""
